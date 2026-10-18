@@ -230,7 +230,7 @@ export function About() {
                       <img
                         src={member.photo_url}
                         alt={lang === 'ar' ? member.name_ar : member.name_en}
-                        className="w-24 h-24 rounded-full object-cover border-4 border-[#F5F0EB]"
+                        className="w-24 h-24 rounded-full object-cover border-4 border-[#F5F0EB]" loading="lazy"
                       />
                       <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-[#D32F2F] rounded-full border-2 border-white" />
                     </div>

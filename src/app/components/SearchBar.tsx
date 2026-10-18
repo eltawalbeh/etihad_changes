@@ -814,8 +814,9 @@ export function SearchBar() {
   const { settings } = useData();
   const navigate = useNavigate();
 
-  const visibleTabs = ALL_TABS.filter((tab) => settings[tab.settingKey]);
-  const tabs = visibleTabs.length > 0 ? visibleTabs : ALL_TABS;
+  // Unintegrated search tabs must never appear as operational booking engines.
+  const visibleTabs = ALL_TABS.filter((tab) => ['packages', 'evisa'].includes(tab.id) && settings[tab.settingKey]);
+  const tabs = visibleTabs.length > 0 ? visibleTabs : ALL_TABS.filter(tab => tab.id === 'packages');
 
   const [activeTab, setActiveTab] = useState<TabId>(tabs[0]?.id ?? 'packages');
   const resolvedTab: TabId = tabs.find((t) => t.id === activeTab) ? activeTab : tabs[0]?.id ?? 'packages';

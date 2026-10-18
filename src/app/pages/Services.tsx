@@ -15,8 +15,10 @@ export function Services() {
   const Arrow = isRTL ? ArrowLeft : ArrowRight;
 
   const visaTypes = [
-    'Schengen Visa', 'USA / Canada Visa', 'UK Visa', 'GCC Visa', 'Australia Visa', 'Japan Visa'
-  ].map(name => ({ name, price: isRTL ? 'اطلب عرض سعر' : 'Request a quote' }));
+    ['تأشيرة شنغن', 'Schengen Visa'], ['تأشيرة أمريكا / كندا', 'USA / Canada Visa'],
+    ['تأشيرة بريطانيا','UK Visa'], ['تأشيرة دول الخليج', 'GCC Visa'],
+    ['تأشيرة أستراليا', 'Australia Visa'], ['تأشيرة اليابان', 'Japan Visa']
+  ].map(([ar,en]) => ({ name: isRTL ? ar : en, price: isRTL ? 'اطلب عرض سعر' : 'Request a quote' }));
 
   const carFleet = [
     { name: isRTL ? 'سيارات اقتصادية' : 'Economy Cars', icon: '🚗' },

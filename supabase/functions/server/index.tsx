@@ -280,7 +280,7 @@ app.get("/make-server-cf64f9a2/packages", async (c) => {
     await seedIfNeeded();
     const raw = await kv.getByPrefix('pkg:');
     const packages = parsePackages(raw as any[])
-      .filter((p: any) => isPackagePublic(p))
+      .filter((p: any) => isPackagePublic(p) && !['maldives-luxury-7','paris-europe-10','istanbul-heritage-5','bali-nature-8','japan-cherry-12','morocco-culture-6','dubai-weekend-3','saudi-al-ula-4'].includes(p.slug))
       .sort((a: any, b: any) => new Date(b.published_at || b.created_at).getTime() - new Date(a.published_at || a.created_at).getTime());
     return c.json({ packages });
   } catch (e) {

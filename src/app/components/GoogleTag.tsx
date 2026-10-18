@@ -69,6 +69,7 @@ export function SiteMetadata() {
     const canonical = 'https://etihadtours.com' + (pathname === '/' ? '/' : pathname);
     document.title = title;
     applyMeta('description', description);
+    applyMeta('robots', ['/privacy', '/terms'].includes(pathname) ? 'noindex,follow' : 'index,follow');
     applyMeta('og:title', title, 'property');
     applyMeta('og:description', description, 'property');
     applyMeta('og:url', canonical, 'property');
