@@ -55,12 +55,12 @@ const ABOUT_DEFAULTS = {
   about_image_url: 'https://images.unsplash.com/photo-1650784854945-264d5b0b6b07?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=900',
   about_story_label_en: 'Our Story',
   about_story_label_ar: 'قصتنا',
-  about_title_en: 'Al-Etihad for Travel & Tourism',
-  about_title_ar: 'نحن الاتحاد للسفر والسياحة',
-  about_story_en: 'Founded in Saudi Arabia with deep roots in Jordan, Al-Etihad Tours has been crafting unforgettable journeys for over 15 years.',
-  about_story_ar: 'تأسست شركة الاتحاد للسفر والسياحة في المملكة العربية السعودية بجذور راسخة في الأردن.',
-  about_story2_en: 'We proudly serve over 3,500 satisfied clients across Saudi Arabia, Jordan, and the wider Gulf region.',
-  about_story2_ar: 'نفخر بخدمة أكثر من 3,500 عميل راضٍ من المملكة العربية السعودية والأردن وسائر دول الخليج.',
+  about_title_en: 'Al-Etihad Travel & Tourism',
+  about_title_ar: 'مؤسسة الاتحاد للسفر والسياحة',
+  about_story_en: 'We aim to deliver a seamless travel experience built around thoughtful planning, quality service, and attention to detail.',
+  about_story_ar: 'نسعى إلى تقديم تجربة سفر متكاملة تجمع بين سهولة التخطيط وجودة الخدمة والاهتمام بالتفاصيل.',
+  about_story2_en: 'Our services include travel arrangements, visa assistance, and coordinated travel solutions tailored to individuals and groups.',
+  about_story2_ar: 'تشمل خدماتنا تنظيم الرحلات السياحية والمساعدة في إجراءات التأشيرات وتنسيق الخدمات المرتبطة بالسفر، بما يلبي احتياجات المسافرين من الأفراد والمجموعات.',
   about_values_title_en: 'Our Values',
   about_values_title_ar: 'قيمنا',
   about_value1_title_en: 'Excellence',
@@ -213,8 +213,8 @@ function PageContentTab() {
         <div className="p-4 bg-gray-50 rounded-lg mb-4">
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Page Title / Main Heading</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Field label="Title (English)" value={form.about_title_en} onChange={(v: string) => set('about_title_en', v)} placeholder="Al-Etihad for Travel & Tourism" />
-            <Field label="Title (Arabic)" value={form.about_title_ar} onChange={(v: string) => set('about_title_ar', v)} placeholder="نحن الاتحاد للسفر والسياحة" dir="rtl" />
+            <Field label="Title (English)" value={form.about_title_en} onChange={(v: string) => set('about_title_en', v)} placeholder="Al-Etihad Travel & Tourism" />
+            <Field label="Title (Arabic)" value={form.about_title_ar} onChange={(v: string) => set('about_title_ar', v)} placeholder="مؤسسة الاتحاد للسفر والسياحة" dir="rtl" />
           </div>
         </div>
 
@@ -222,8 +222,8 @@ function PageContentTab() {
         <div className="p-4 bg-gray-50 rounded-lg mb-4">
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">First Paragraph</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Field label="Paragraph (English)" value={form.about_story_en} onChange={(v: string) => set('about_story_en', v)} placeholder="Founded in Saudi Arabia…" multiline />
-            <Field label="Paragraph (Arabic)" value={form.about_story_ar} onChange={(v: string) => set('about_story_ar', v)} placeholder="تأسست شركة الاتحاد…" dir="rtl" multiline />
+            <Field label="Paragraph (English)" value={form.about_story_en} onChange={(v: string) => set('about_story_en', v)} placeholder="We aim to deliver a seamless travel experience…" multiline />
+            <Field label="Paragraph (Arabic)" value={form.about_story_ar} onChange={(v: string) => set('about_story_ar', v)} placeholder="نسعى إلى تقديم تجربة سفر متكاملة…" dir="rtl" multiline />
           </div>
         </div>
 
@@ -231,8 +231,8 @@ function PageContentTab() {
         <div className="p-4 bg-gray-50 rounded-lg">
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Second Paragraph</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Field label="Paragraph (English)" value={form.about_story2_en} onChange={(v: string) => set('about_story2_en', v)} placeholder="We proudly serve over…" multiline />
-            <Field label="Paragraph (Arabic)" value={form.about_story2_ar} onChange={(v: string) => set('about_story2_ar', v)} placeholder="نفخر بخدمة أكثر من…" dir="rtl" multiline />
+            <Field label="Paragraph (English)" value={form.about_story2_en} onChange={(v: string) => set('about_story2_en', v)} placeholder="Our services include travel arrangements…" multiline />
+            <Field label="Paragraph (Arabic)" value={form.about_story2_ar} onChange={(v: string) => set('about_story2_ar', v)} placeholder="تشمل خدماتنا تنظيم الرحلات السياحية…" dir="rtl" multiline />
           </div>
         </div>
       </Section>
