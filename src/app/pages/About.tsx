@@ -63,6 +63,13 @@ export function About() {
     { value: stats.destinations + '+', label: t('stats.destinations') },
   ];
 
+  // Render marketing metrics only after explicit CMS verification. Vite's build alone
+  // cannot catch references to undeclared runtime variables inside a React component.
+  const numericStats = [stats.happy_clients, stats.trips_organized, stats.years_experience, stats.destinations];
+  const verifiedStatsData = settings.stats_verified === true
+    ? statsData.filter((_stat, index) => Number.isFinite(numericStats[index]) && numericStats[index] > 0)
+    : [];
+
   const partners = ['🏢', '✈️', '🏨', '🌍', '🛂', '🚗'];
 
   return (
