@@ -133,7 +133,7 @@ export function About() {
       </section>
 
       {/* ── Stats ── */}
-      <section className="py-16 bg-[#D32F2F]">
+      {verifiedStatsData.length > 0 && <section className="py-16 bg-[#D32F2F]">
         <div className="max-w-[1280px] mx-auto px-6">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {statsData.map((stat, i) => (
@@ -155,7 +155,7 @@ export function About() {
             ))}
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* ── Values ── */}
       <section className="py-20 bg-[#F5F0EB]">

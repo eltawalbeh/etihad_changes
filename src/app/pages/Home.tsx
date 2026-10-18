@@ -110,7 +110,7 @@ export function Home() {
     { label: t('stats.trips'), value: stats.trips_organized, suffix: '+' },
     { label: t('stats.years'), value: stats.years_experience, suffix: '' },
     { label: t('stats.destinations'), value: stats.destinations, suffix: '' },
-  ];
+  ].filter(item => settings.stats_verified === true && item.value > 0);
 
   return (
     <div style={{ fontFamily: FONT }}>
@@ -289,7 +289,7 @@ export function Home() {
       </AnimatePresence>
 
       {/* ===== STATS BAR ===== */}
-      <section className="bg-white border-y border-gray-100 py-10">
+      {statsData.length > 0 && <section className="bg-white border-y border-gray-100 py-10">
         <div className="max-w-[1280px] mx-auto px-6">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8" dir={isRTL ? 'rtl' : 'ltr'}>
             {statsData.map((stat, i) => (
@@ -306,7 +306,7 @@ export function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* ===== SERVICES ===== */}
       <section className="py-20 bg-[#F5F0EB]">

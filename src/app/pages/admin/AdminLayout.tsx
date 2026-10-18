@@ -11,6 +11,7 @@ const ADMIN_LANG_KEY = 'etihad_admin_lang';
 
 const baseNavItems_en = [
   { path: '/admin/dashboard', label: 'Dashboard',    icon: LayoutDashboard },
+  { path: '/admin/inquiries', label: 'Inquiries', icon: MessageCircle },
   { path: '/admin/packages',  label: 'Packages',     icon: Package },
   { path: '/admin/articles',  label: 'News & Blog',  icon: FileText },
   { path: '/admin/about',     label: 'About Us',     icon: Info },
@@ -18,6 +19,7 @@ const baseNavItems_en = [
 ];
 const baseNavItems_ar = [
   { path: '/admin/dashboard', label: 'لوحة التحكم',   icon: LayoutDashboard },
+  { path: '/admin/inquiries', label: 'الاستفسارات', icon: MessageCircle },
   { path: '/admin/packages',  label: 'الرحلات',       icon: Package },
   { path: '/admin/articles',  label: 'الأخبار والمدونة', icon: FileText },
   { path: '/admin/about',     label: 'من نحن',        icon: Info },

@@ -61,6 +61,7 @@ export interface Article {
 }
 
 export interface TeamMember {
+  approval_status?: 'draft' | 'pending' | 'approved';
   id: string;
   name_ar: string;
   name_en: string;
@@ -413,40 +414,7 @@ export const articles: Article[] = [
 ];
 
 export const teamMembers: TeamMember[] = [
-  {
-    id: '1',
-    name_ar: 'أحمد الزهراني',
-    name_en: 'Ahmed Al-Zahrani',
-    role_ar: 'المدير التنفيذي',
-    role_en: 'Chief Executive Officer',
-    photo_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face',
-    display_order: 1,
-  },
-  {
-    id: '2',
-    name_ar: 'منى العبدالله',
-    name_en: 'Mona Al-Abdullah',
-    role_ar: 'مدير العمليات',
-    role_en: 'Operations Director',
-    photo_url: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop&crop=face',
-    display_order: 2,
-  },
-  {
-    id: '3',
-    name_ar: 'خالد المنصور',
-    name_en: 'Khaled Al-Mansour',
-    role_ar: 'مدير المبيعات',
-    role_en: 'Sales Manager',
-    photo_url: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face',
-    display_order: 3,
-  },
-  {
-    id: '4',
-    name_ar: 'سارة الرشيد',
-    name_en: 'Sara Al-Rashid',
-    role_ar: 'متخصصة التأشيرات',
-    role_en: 'Visa Specialist',
-    photo_url: 'https://images.unsplash.com/photo-1494790108755-2616b612b4c4?w=300&h=300&fit=crop&crop=face',
-    display_order: 4,
-  },
+  { id: 'approved-abdullah', name_ar: 'عبدالله الطوالبة', name_en: 'Abdullah Al Tawalbeh', role_ar: 'المدير العام', role_en: 'General Manager', photo_url: '', display_order: 1, approval_status: 'approved' },
+  { id: 'approved-nabeel', name_ar: 'نبيل أحمد', name_en: 'Nabeel Ahmad', role_ar: 'مسؤول التذاكر', role_en: 'Ticketing Officer', photo_url: '', display_order: 2, approval_status: 'approved' },
+  { id: 'approved-farhan', name_ar: 'فرحان إسحاق', name_en: 'Farhan Ishaq', role_ar: 'مسؤول التذاكر', role_en: 'Ticketing Officer', photo_url: '', display_order: 3, approval_status: 'approved' },
 ];

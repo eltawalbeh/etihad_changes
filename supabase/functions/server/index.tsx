@@ -203,26 +203,18 @@ app.use('/make-server-cf64f9a2/admin/*', authMiddleware());
 // ─── Seeding ──────────────────────────────────────────────────────────────────
 
 async function seedIfNeeded() {
+  // Migration is intentionally non-destructive: never reset real site settings or published records.
   try {
-    const seeded = await kv.get('site:seeded');
-    if (seeded) return;
-
-    console.log('Seeding initial data...');
-
-    for (const pkg of SEED_PACKAGES) {
-      await kv.set(`pkg:${pkg.id}`, JSON.stringify(pkg));
-    }
-    for (const art of SEED_ARTICLES) {
-      await kv.set(`art:${art.id}`, JSON.stringify(art));
-    }
     for (const member of SEED_TEAM) {
-      await kv.set(`tm:${member.id}`, JSON.stringify(member));
+      if (!(await kv.get(`tm:${member.id}`))) {
+        await kv.set(`tm:${member.id}`, JSON.stringify(member));
+      }
     }
-    await kv.set('settings', JSON.stringify(DEFAULT_SETTINGS));
-    await kv.set('site:seeded', '1');
-    console.log('Seeding complete.');
-  } catch (e) {
-    console.log('Seeding error:', e);
+    if (!(await kv.get('settings'))) await kv.set('settings', JSON.stringify(DEFAULT_SETTINGS));
+    if (!(await kv.get('site:seeded'))) await kv.set('site:seeded', 'safe-v2');
+  } catch (error) {
+    console.error('Safe initialization failed', error);
+    throw error;
   }
 }
 
@@ -234,6 +226,51 @@ app.get("/make-server-cf64f9a2/admin/me", (c) => {
   const user = c.get('user') as { id: string; email?: string };
   const role = c.get('role') as string;
   return c.json({ user: { id: user.id, email: user.email || '', role } });
+});
+
+
+const clean = (input: unknown, max: number) => typeof input === 'string' ? input.trim().slice(0, max) : '';
+app.post('/make-server-cf64f9a2/inquiries', async (c) => {
+  try {
+    const body = await c.req.json().catch(() => null);
+    if (!body || typeof body !== 'object' || clean(body.website, 200)) return c.json({ error: 'Invalid request' }, 400);
+    const source = clean(body.source, 40);
+    if (!['contact', 'service', 'package_booking'].includes(source)) return c.json({ error: 'Invalid source' }, 400);
+    const name = clean(body.name, 100), phone = clean(body.phone, 35), email = clean(body.email, 150);
+    const message = clean(body.message, 2500), subject = clean(body.subject, 150);
+    if (name.length < 2 || phone.length < 6 || message.length < 3) return c.json({ error: 'Name, phone, and message are required' }, 400);
+    if (email && !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) return c.json({ error: 'Invalid email' }, 400);
+    if (JSON.stringify(body).length > 12000) return c.json({ error: 'Request too large' }, 413);
+    // Best-effort burst control, use a gateway/WAF for stronger rate limiting.
+    const requestIp = clean(c.req.header('cf-connecting-ip') || c.req.header('x-forwarded-for') || '', 90).split(',')[0];
+    const hashBytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(requestIp || 'unidentified'));
+    const hash = Array.from(new Uint8Array(hashBytes)).map(x => x.toString(16).padStart(2,'0')).join('').slice(0,24);
+    const hour = new Date().toISOString().slice(0,13);
+    const key = `inquiry-rate:${hour}:${hash}`;
+    const count = Number(await kv.get(key) || 0);
+    if (count >= 8) return c.json({ error: 'Too many requests; try later' }, 429);
+    await kv.set(key, count + 1);
+    const inquiry = {
+      id: generateId(), source, name, phone, email, message, subject,
+      package_id: clean(body.package_id, 100),
+      created_at: new Date().toISOString(), status: 'new'
+    };
+    await kv.set(`inquiry:${inquiry.id}`, JSON.stringify(inquiry));
+    return c.json({ success: true, reference: inquiry.id }, 201);
+  } catch (error) {
+    console.error('Inquiries submission failed', error);
+    return c.json({ error: 'Could not save the inquiry. Please try WhatsApp.' }, 503);
+  }
+});
+app.get('/make-server-cf64f9a2/admin/inquiries', requireContentManagement, async (c) => {
+  try {
+    const all = parseItems(await kv.getByPrefix('inquiry:') as any[]);
+    return c.json({ inquiries: all.sort((a: any,b: any) => String(b.created_at).localeCompare(String(a.created_at))).slice(0, 200) });
+  } catch { return c.json({ error: 'Unable to load inquiries' }, 503); }
+});
+app.delete('/make-server-cf64f9a2/admin/inquiries/:id', requireSettingsManagement, async (c) => {
+  await kv.del(`inquiry:${c.req.param('id')}`);
+  return c.json({ success: true });
 });
 
 // ─── Packages (Public) ───────────────────────────────────────────────────────
@@ -573,6 +610,8 @@ app.put("/make-server-cf64f9a2/admin/articles/:id", requireContentManagement, as
     const body = await c.req.json();
     const existing = await kv.get(`art:${id}`);
     if (!existing) return c.json({ error: 'Article not found' }, 404);
+    const allowedApproval = body.approval_status === 'approved' ? canManageSettings(c.get('role')) : true;
+    if (!allowedApproval) return c.json({ error: 'Only superadmins can approve team members' }, 403);
     const updated = { ...parseKvValue(existing), ...body, id };
     await kv.set(`art:${id}`, JSON.stringify(updated));
     return c.json({ article: updated });
@@ -600,6 +639,7 @@ app.get("/make-server-cf64f9a2/team", async (c) => {
     await seedIfNeeded();
     const raw = await kv.getByPrefix('tm:');
     const team = parseItems(raw as (string | null)[])
+      .filter((member: any) => member.approval_status === 'approved')
       .sort((a: any, b: any) => (a.display_order || 0) - (b.display_order || 0));
     return c.json({ team });
   } catch (e) {
@@ -627,7 +667,7 @@ app.post("/make-server-cf64f9a2/admin/team", requireContentManagement, async (c)
   try {
     const body = await c.req.json();
     const id = generateId();
-    const member = { ...body, id };
+    const member = { ...body, id, approval_status: body.approval_status === 'approved' && canManageSettings(c.get('role')) ? 'approved' : 'pending' };
     await kv.set(`tm:${id}`, JSON.stringify(member));
     return c.json({ member }, 201);
   } catch (e) {
@@ -721,14 +761,7 @@ app.put("/make-server-cf64f9a2/admin/settings", requireSettingsManagement, async
 // ─── Admin Re-seed ────────────────────────────────────────────────────────────
 
 app.post("/make-server-cf64f9a2/admin/seed", requireSettingsManagement, async (c) => {
-  try {
-    await kv.del('site:seeded');
-    await seedIfNeeded();
-    return c.json({ success: true, message: 'Data re-seeded successfully.' });
-  } catch (e) {
-    console.log('Re-seed error:', e);
-    return c.json({ error: `Error re-seeding: ${e}` }, 500);
-  }
+  return c.json({ error: 'Destructive re-seeding is disabled. Existing content is preserved.' }, 410);
 });
 
 // ─── Image Upload ─────────────────────────────────────────────────────────────

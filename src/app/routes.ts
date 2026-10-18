@@ -22,6 +22,8 @@ export const router = createBrowserRouter([
       { path: 'news', lazy: load(() => import('./pages/News'), 'News') },
       { path: 'news/:slug', lazy: load(() => import('./pages/NewsDetail'), 'NewsDetail') },
       { path: 'contact', lazy: load(() => import('./pages/Contact'), 'Contact') },
+      { path: 'privacy', lazy: load(() => import('./pages/Legal'), 'Privacy') },
+      { path: 'terms', lazy: load(() => import('./pages/Legal'), 'Terms') },
       { path: 'search', lazy: load(() => import('./pages/Search'), 'Search') },
       { path: 'evisa', lazy: load(() => import('./pages/EVisaPage'), 'EVisaPage') },
       { path: '*', lazy: load(() => import('./pages/NotFound'), 'NotFound') },
@@ -33,6 +35,7 @@ export const router = createBrowserRouter([
     Component: AdminLayout,
     children: [
       { path: 'dashboard', lazy: load(() => import('./pages/admin/AdminDashboard'), 'AdminDashboard') },
+      { path: 'inquiries', lazy: load(() => import('./pages/admin/AdminInquiries'), 'AdminInquiries') },
       { path: 'packages', lazy: load(() => import('./pages/admin/AdminPackages'), 'AdminPackages') },
       { path: 'packages/new', lazy: load(() => import('./pages/admin/AdminPackageForm'), 'AdminPackageForm') },
       { path: 'packages/bulk-import', lazy: load(() => import('./pages/admin/AdminBulkImport'), 'AdminBulkImport') },

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { projectId, publicAnonKey } from '/utils/supabase/info';
-import { packages as mockPackages, articles as mockArticles, teamMembers as mockTeam, stats as mockStats } from '../data/mockData';
+
 import type { Package, Article, TeamMember, Stats } from '../data/mockData';
 
 const BASE_URL = `https://${projectId}.supabase.co/functions/v1/make-server-cf64f9a2`;
@@ -13,8 +13,16 @@ export interface SiteSettings {
   address_en: string;
   address2_ar: string;
   address2_en: string;
+  office_arar_label_ar?: string;
+  office_arar_label_en?: string;
+  office_arar_maps_url?: string;
+  office_riyadh_label_ar?: string;
+  office_riyadh_label_en?: string;
+  office_riyadh_phone?: string;
+  office_riyadh_maps_url?: string;
   working_hours_ar: string;
   working_hours_en: string;
+  stats_verified?: boolean;
   stats_happy_clients: number;
   stats_trips_organized: number;
   stats_years_experience: number;
@@ -89,13 +97,21 @@ const DEFAULT_SETTINGS: SiteSettings = {
   address_en: 'King Abdulaziz Road, Alkhalidiyah, Arar 73211, Saudi Arabia',
   address2_ar: '',
   address2_en: '',
+  office_arar_label_ar: 'موقع عرعر',
+  office_arar_label_en: 'Arar Office',
+  office_arar_maps_url: 'https://maps.app.goo.gl/Knh6hM25FxMR8CVm7',
+  office_riyadh_label_ar: 'موقع الرياض',
+  office_riyadh_label_en: 'Riyadh Office',
+  office_riyadh_phone: '',
+  office_riyadh_maps_url: '',
   working_hours_ar: 'الأحد–الخميس: ٩ ص – ٦ م',
   working_hours_en: 'Sun–Thu: 9:00 AM – 6:00 PM',
-  stats_happy_clients: 12500,
-  stats_trips_organized: 3800,
-  stats_years_experience: 15,
-  stats_destinations: 65,
-  company_name_ar: 'الاتحاد للسفر والسياحة',
+  stats_verified: false,
+  stats_happy_clients: 0,
+  stats_trips_organized: 0,
+  stats_years_experience: 0,
+  stats_destinations: 0,
+  company_name_ar: 'مؤسسة الاتحاد للسفر والسياحة',
   company_name_en: 'Al-Etihad for Travel & Tourism',
   tagline_ar: 'شريكك الموثوق في السفر عبر المنطقة والعالم.',
   tagline_en: 'Your trusted travel partner across the region and beyond.',
@@ -135,10 +151,10 @@ const DEFAULT_SETTINGS: SiteSettings = {
   about_story_label_ar: 'قصتنا',
   about_title_en: 'Al-Etihad for Travel & Tourism',
   about_title_ar: 'نحن الاتحاد للسفر والسياحة',
-  about_story_en: 'Founded in Saudi Arabia with deep roots in Jordan, Al-Etihad Tours has been crafting unforgettable journeys for over 15 years. From luxury international getaways to seamless visa services, we handle every detail so you can focus on the experience.',
-  about_story_ar: 'تأسست شركة الاتحاد للسفر والسياحة في المملكة العربية السعودية بجذور راسخة في الأردن، وقد عملنا على صياغة رحلات لا تُنسى لأكثر من ٠٥ عاماً. من الرحلات الدولية الفاخرة إلى خدمات التأشيرات السلسة، نتولى كل التفاصيل حتى تتفرغ للتجربة.',
-  about_story2_en: 'We proudly serve over 3,500 satisfied clients across Saudi Arabia, Jordan, and the wider Gulf region, committed to delivering exceptional travel experiences that reflect our core values of quality and integrity.',
-  about_story2_ar: 'نفخر بخدمة أكثر من 3,500 عميل راضٍ من المملكة العربية السعودية والأردن وسائر دول الخليج، ونلتزم بتقديم تجارب سفر استثنائية تعكس قيمنا في الجودة والنزاهة.',
+  about_story_en: "Al-Etihad Travel & Tourism aims to make travel planning easier through attentive service and thoughtful coordination. Our services include travel arrangements, visa assistance, and related travel solutions.",
+  about_story_ar: "نسعى في مؤسسة الاتحاد للسفر والسياحة إلى تقديم تجربة سفر متكاملة تجمع بين سهولة التخطيط وجودة الخدمة والاهتمام بالتفاصيل. تشمل خدماتنا تنظيم الرحلات السياحية والمساعدة في إجراءات التأشيرات وتنسيق الخدمات المرتبطة بالسفر.",
+  about_story2_en: "We offer travel solutions for individuals and groups, with clear communication and attention to every journey.",
+  about_story2_ar: "نقدم حلول سفر تناسب الأفراد والمجموعات، مع الحرص على الوضوح والتواصل ومتابعة تفاصيل الرحلة.",
   about_values_title_en: 'Our Values',
   about_values_title_ar: 'قيمنا',
   about_value1_title_en: 'Excellence',
@@ -166,11 +182,11 @@ interface DataContextType {
 }
 
 const DataContext = createContext<DataContextType>({
-  packages: mockPackages,
-  articles: mockArticles,
-  team: mockTeam,
+  packages: [],
+  articles: [],
+  team: [],
   settings: DEFAULT_SETTINGS,
-  stats: mockStats,
+  stats: { happy_clients: 0, trips_organized: 0, years_experience: 0, destinations: 0 },
   loading: false,
   refresh: () => {},
 });
@@ -184,11 +200,11 @@ async function apiFetch(path: string) {
 }
 
 export function DataProvider({ children }: { children: React.ReactNode }) {
-  const [packages, setPackages] = useState<Package[]>(mockPackages);
-  const [articles, setArticles] = useState<Article[]>(mockArticles);
-  const [team, setTeam] = useState<TeamMember[]>(mockTeam);
+  const [packages, setPackages] = useState<Package[]>([]);
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [team, setTeam] = useState<TeamMember[]>([]);
   const [settings, setSettings] = useState<SiteSettings>(DEFAULT_SETTINGS);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const fetchAll = useCallback(async () => {
     setLoading(true);
@@ -200,14 +216,14 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         apiFetch('/settings'),
       ]);
 
-      if (pkgRes.status === 'fulfilled' && pkgRes.value.packages?.length) {
+      if (pkgRes.status === 'fulfilled' && Array.isArray(pkgRes.value.packages)) {
         setPackages(pkgRes.value.packages);
       }
-      if (artRes.status === 'fulfilled' && artRes.value.articles?.length) {
+      if (artRes.status === 'fulfilled' && Array.isArray(artRes.value.articles)) {
         setArticles(artRes.value.articles);
       }
-      if (teamRes.status === 'fulfilled' && teamRes.value.team?.length) {
-        setTeam(teamRes.value.team);
+      if (teamRes.status === 'fulfilled' && Array.isArray(teamRes.value.team)) {
+        setTeam(teamRes.value.team.filter((m: TeamMember) => m.approval_status === 'approved'));
       }
       if (settingsRes.status === 'fulfilled' && settingsRes.value.settings) {
         setSettings(settingsRes.value.settings);

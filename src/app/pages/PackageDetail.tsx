@@ -4,6 +4,7 @@ import { Clock, Users, MapPin, CheckCircle, XCircle, Calendar, MessageCircle, Ch
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { useData } from '../context/DataContext';
+import { submitInquiry } from '../lib/inquiries';
 import { PackageCard } from '../components/PackageCard';
 import { EmojiFlag, toFlagEmoji } from '../components/EmojiFlag';
 import { buildWhatsAppUrl, normalizeWhatsAppNumber, recordWhatsAppClick } from '../lib/siteTracking';
@@ -19,6 +20,8 @@ export function PackageDetail() {
   const [children, setChildren] = useState(0);
   const [galleryIndex, setGalleryIndex] = useState<number | null>(null);
   const [bookingSuccess, setBookingSuccess] = useState(false);
+  const [bookingSending, setBookingSending] = useState(false);
+  const [bookingError, setBookingError] = useState('');
 
   // Booking form state
   const [bookingName, setBookingName] = useState('');
@@ -81,9 +84,20 @@ export function PackageDetail() {
     currentPackageUrl ? `${isRTL ? 'رابط الباقة' : 'Package URL'}: ${currentPackageUrl}` : '',
   ].filter(Boolean).join('\n');
 
-  const handleBookingSubmit = (e: React.FormEvent) => {
+  const handleBookingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setBookingSuccess(true);
+    if (bookingSending) return;
+    setBookingSending(true); setBookingError('');
+    try {
+      await submitInquiry({
+        source: 'package_booking', name: bookingName, phone: bookingPhone,
+        email: bookingEmail, subject: title, package_id: pkg.id,
+        message: [`Travel date: ${bookingDate}`, `Adults: ${adults}`, `Children: ${children}`,
+          `Requests: ${bookingRequests}`, `Page: ${currentPackageUrl}`].join('\n'),
+      });
+      setBookingSuccess(true);
+    } catch (error) { setBookingError(error instanceof Error ? error.message : 'Request failed'); }
+    finally { setBookingSending(false); }
   };
 
   return (
@@ -317,8 +331,8 @@ export function PackageDetail() {
               {bookingSuccess ? (
                 <div className="p-8 text-center">
                   <div className="text-6xl mb-4">✅</div>
-                  <h4 className="text-xl font-bold text-[#0D0D0D] mb-2">{t('booking.success')}</h4>
-                  <p className="text-[#8C8076] mb-6">{t('booking.success_msg')}</p>
+                  <h4 className="text-xl font-bold text-[#0D0D0D] mb-2">{isRTL ? 'تم استلام طلب الحجز' : 'Booking request received'}</h4>
+                  <p className="text-[#8C8076] mb-6">{isRTL ? 'هذا طلب حجز قيد المراجعة وليس تأكيدًا نهائيًا للحجز.' : 'This is a request, not a confirmed booking. Our team will follow up.'}</p>
                   {/* WhatsApp follow-up with ALL booking details */}
                   {whatsappNumber && (
                     <a
@@ -338,6 +352,7 @@ export function PackageDetail() {
                 </div>
               ) : (
                 <form onSubmit={handleBookingSubmit} className="p-6 overflow-y-auto max-h-[70vh]">
+                  {bookingError && <p role="alert" className="mb-3 text-sm text-red-700">{bookingError}</p>}
                   {/* Package summary */}
                   <div className="flex items-center gap-3 p-3 bg-[#F5F0EB] rounded-lg mb-5">
                     <img src={pkg.cover_image_url} alt={title} className="w-14 h-14 rounded-lg object-cover shrink-0" />
@@ -425,10 +440,10 @@ export function PackageDetail() {
                       type="submit"
                       className="w-full py-3.5 bg-[#D32F2F] hover:bg-[#9A0007] text-white rounded-xl font-semibold text-sm transition-colors"
                     >
-                      {t('booking.submit')}
+                      {bookingSending ? (isRTL ? 'جاري الإرسال...' : 'Submitting...') : t('booking.submit')}
                     </button>
                     <p className="text-xs text-[#8C8076] text-center">
-                      {isRTL ? 'بعد إرسال الطلب ستظهر لك رسالة WhatsApp بكامل التفاصيل.' : 'After submitting, WhatsApp will open with the complete booking details.'}
+                      {isRTL ? 'طلب الحجز يحتاج مراجعة وتأكيد من فريقنا.' : 'Your request requires confirmation from our team.'}
                     </p>
                   </div>
                 </form>

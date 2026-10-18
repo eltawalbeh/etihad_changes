@@ -10,10 +10,11 @@ const EMPTY_MEMBER = {
   role_ar: '',
   photo_url: '',
   display_order: 1,
+  approval_status: 'pending',
 };
 
 export function AdminTeam() {
-  const { adminFetch } = useAdminAuth();
+  const { adminFetch, currentUser } = useAdminAuth();
   const [team, setTeam] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -142,6 +143,14 @@ export function AdminTeam() {
               hint="Square photo recommended. Min 200×200 px."
               previewClass="w-full h-40 object-cover rounded-xl border border-gray-200"
             />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-600 mb-1">Approval status</label>
+            <select value={data.approval_status || 'pending'} onChange={e => onChange({ ...data, approval_status: e.target.value })} className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm">
+              <option value="draft">Draft — hidden</option>
+              <option value="pending">Pending — hidden</option>
+              {currentUser?.role === 'superadmin' && <option value="approved">Approved — public</option>}
+            </select>
           </div>
           <div>
             <label className="block text-xs font-medium text-gray-600 mb-1">Display Order</label>

@@ -68,6 +68,14 @@ export function AdminSettings() {
     address_ar: '',
     address2_en: '',
     address2_ar: '',
+    office_arar_label_ar: '',
+    office_arar_label_en: '',
+    office_arar_maps_url: '',
+    office_riyadh_label_ar: '',
+    office_riyadh_label_en: '',
+    office_riyadh_phone: '',
+    office_riyadh_maps_url: '',
+    stats_verified: false,
     working_hours_en: '',
     working_hours_ar: '',
     stats_happy_clients: '',
@@ -125,6 +133,14 @@ export function AdminSettings() {
             address_ar: data.settings.address_ar || data.settings.address_ksa_ar || '',
             address2_en: data.settings.address2_en || '',
             address2_ar: data.settings.address2_ar || '',
+            office_arar_label_ar: data.settings.office_arar_label_ar || 'موقع عرعر',
+            office_arar_label_en: data.settings.office_arar_label_en || 'Arar Office',
+            office_arar_maps_url: data.settings.office_arar_maps_url || 'https://maps.app.goo.gl/Knh6hM25FxMR8CVm7',
+            office_riyadh_label_ar: data.settings.office_riyadh_label_ar || 'موقع الرياض',
+            office_riyadh_label_en: data.settings.office_riyadh_label_en || 'Riyadh Office',
+            office_riyadh_phone: data.settings.office_riyadh_phone || '',
+            office_riyadh_maps_url: data.settings.office_riyadh_maps_url || '',
+            stats_verified: data.settings.stats_verified === true,
             working_hours_en: data.settings.working_hours_en || '',
             working_hours_ar: data.settings.working_hours_ar || '',
             stats_happy_clients: data.settings.stats_happy_clients?.toString() || '',
@@ -183,6 +199,7 @@ export function AdminSettings() {
     try {
       const payload = {
         ...form,
+        stats_verified: form.stats_verified === true,
         stats_happy_clients: parseInt(form.stats_happy_clients) || 0,
         stats_trips_organized: parseInt(form.stats_trips_organized) || 0,
         stats_years_experience: parseInt(form.stats_years_experience) || 0,
@@ -339,22 +356,29 @@ export function AdminSettings() {
       {/* Address */}
       <Section title="Office Address" icon={MapPin}>
         <p className="text-xs text-gray-400 mb-4">
-          The first address is the main location. Add a second address if you have a second branch — it will appear automatically on the Contact Us page.
+          Locations belong to the company group. Set each office label independently; do not infer headquarters or branch status from the order.
         </p>
         <div className="space-y-4">
           <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Location 1 — Main Branch</p>
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Location 1 — Arar</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Field label="Address (English)" value={form.address_en} onChange={(v: string) => set('address_en', v)} placeholder="King Abdulaziz Road, Alkhalidiyah, Arar 73211, Saudi Arabia" />
               <Field label="Address (Arabic)" value={form.address_ar} onChange={(v: string) => set('address_ar', v)} placeholder="طريق الملك عبدالعزيز، الخالدية، عرعر 73211" dir="rtl" />
+              <Field label="Office label (Arabic)" value={form.office_arar_label_ar} onChange={(v: string) => set('office_arar_label_ar', v)} />
+              <Field label="Office label (English)" value={form.office_arar_label_en} onChange={(v: string) => set('office_arar_label_en', v)} />
+              <Field label="Google Maps URL" value={form.office_arar_maps_url} onChange={(v: string) => set('office_arar_maps_url', v)} type="url" />
             </div>
           </div>
           <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Location 2 — Second Branch <span className="font-normal normal-case text-gray-400">(optional)</span></p>
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Location 2 — Riyadh <span className="font-normal normal-case text-gray-400">(optional)</span></p>
             <p className="text-xs text-gray-400 mb-3">Leave empty to hide this location from the Contact Us page.</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Field label="Address (English)" value={form.address2_en} onChange={(v: string) => set('address2_en', v)} placeholder="e.g. Al Olaya District, Riyadh 12333, Saudi Arabia" />
               <Field label="Address (Arabic)" value={form.address2_ar} onChange={(v: string) => set('address2_ar', v)} placeholder="مثال: حي العليا، الرياض 12333" dir="rtl" />
+              <Field label="Office label (Arabic)" value={form.office_riyadh_label_ar} onChange={(v: string) => set('office_riyadh_label_ar', v)} />
+              <Field label="Office label (English)" value={form.office_riyadh_label_en} onChange={(v: string) => set('office_riyadh_label_en', v)} />
+              <Field label="Riyadh office phone" value={form.office_riyadh_phone} onChange={(v: string) => set('office_riyadh_phone', v)} />
+              <Field label="Google Maps URL" value={form.office_riyadh_maps_url} onChange={(v: string) => set('office_riyadh_maps_url', v)} type="url" />
             </div>
           </div>
         </div>
@@ -374,6 +398,7 @@ export function AdminSettings() {
         <div className="space-y-5" role="tabpanel">
       {/* Stats */}
       <Section title="Statistics (Homepage Counter)" icon={BarChart3}>
+        <label className="flex items-center gap-2 text-sm text-gray-700 mb-4"><input type="checkbox" checked={!!form.stats_verified} onChange={e => set('stats_verified', e.target.checked)} /> Publish verified statistics (enable only after evidence is approved)</label>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <Field label="Happy Clients" value={form.stats_happy_clients} onChange={(v: string) => set('stats_happy_clients', v)} type="number" placeholder="12500" />
           <Field label="Trips Organized" value={form.stats_trips_organized} onChange={(v: string) => set('stats_trips_organized', v)} type="number" placeholder="3800" />

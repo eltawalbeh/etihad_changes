@@ -3,22 +3,20 @@ import { Link } from 'react-router';
 import { Plane, Map, FileText, Car, Building2, ArrowRight, ArrowLeft, Check } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
+import { submitInquiry } from '../lib/inquiries';
 
 const PAGE_HERO = 'https://images.unsplash.com/photo-1650784854945-264d5b0b6b07?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1600';
 
 export function Services() {
   const { t, lang, isRTL } = useLanguage();
   const [inquirySuccess, setInquirySuccess] = useState(false);
+  const [inquirySending, setInquirySending] = useState(false);
+  const [inquiryError, setInquiryError] = useState('');
   const Arrow = isRTL ? ArrowLeft : ArrowRight;
 
   const visaTypes = [
-    { name: isRTL ? 'تأشيرة شنغن' : 'Schengen Visa', price: isRTL ? 'من ٣٠٠ ر.س' : 'From 300 SAR' },
-    { name: isRTL ? 'تأشيرة أمريكا / كندا' : 'USA / Canada Visa', price: isRTL ? 'من ٥٠٠ ر.س' : 'From 500 SAR' },
-    { name: isRTL ? 'تأشيرة بريطانيا' : 'UK Visa', price: isRTL ? 'من ٤٥٠ ر.س' : 'From 450 SAR' },
-    { name: isRTL ? 'تأشيرة دول الخليج' : 'GCC Visa', price: isRTL ? 'من ١٥٠ ر.س' : 'From 150 SAR' },
-    { name: isRTL ? 'تأشيرة أستراليا' : 'Australia Visa', price: isRTL ? 'من ٥٥٠ ر.س' : 'From 550 SAR' },
-    { name: isRTL ? 'تأشيرة اليابان' : 'Japan Visa', price: isRTL ? 'من ٢٥٠ ر.س' : 'From 250 SAR' },
-  ];
+    'Schengen Visa', 'USA / Canada Visa', 'UK Visa', 'GCC Visa', 'Australia Visa', 'Japan Visa'
+  ].map(name => ({ name, price: isRTL ? 'اطلب عرض سعر' : 'Request a quote' }));
 
   const carFleet = [
     { name: isRTL ? 'سيارات اقتصادية' : 'Economy Cars', icon: '🚗' },
@@ -27,10 +25,21 @@ export function Services() {
     { name: isRTL ? 'حافلات صغيرة' : 'Mini Buses', icon: '🚐' },
   ];
 
-  const handleInquiry = (e: React.FormEvent) => {
+  const handleInquiry = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // TODO: POST to Supabase inquiries table
-    setInquirySuccess(true);
+    if (inquirySending) return;
+    setInquirySending(true); setInquiryError('');
+    const fields = new FormData(e.currentTarget);
+    try {
+      await submitInquiry({
+        source: 'service', name: String(fields.get('name') || ''),
+        phone: String(fields.get('phone') || ''), email: String(fields.get('email') || ''),
+        subject: String(fields.get('service') || ''),
+        message: String(fields.get('message') || ''),
+      });
+      setInquirySuccess(true);
+    } catch (error) { setInquiryError(error instanceof Error ? error.message : 'Request failed'); }
+    finally { setInquirySending(false); }
   };
 
   const services = [
@@ -260,16 +269,18 @@ export function Services() {
             </div>
           ) : (
             <form onSubmit={handleInquiry} className={`bg-[#F5F0EB] rounded-2xl p-8 shadow-sm ${isRTL ? 'text-right' : 'text-left'}`}>
+              {inquiryError && <p role="alert" className="mb-3 text-red-700 text-sm">{inquiryError}</p>}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 {[
-                  { label: t('contact.full_name'), type: 'text', placeholder: isRTL ? 'الاسم الكامل' : 'Full Name' },
-                  { label: t('contact.phone'), type: 'tel', placeholder: '+966 5XX XXX XXXX' },
-                  { label: t('contact.email'), type: 'email', placeholder: 'email@example.com' },
+                  { name: 'name', label: t('contact.full_name'), type: 'text', placeholder: isRTL ? 'الاسم الكامل' : 'Full Name' },
+                  { name: 'phone', label: t('contact.phone'), type: 'tel', placeholder: '+966 5XX XXX XXXX' },
+                  { name: 'email', label: t('contact.email'), type: 'email', placeholder: 'email@example.com' },
                 ].map(f => (
                   <div key={f.label} className={f.label === t('contact.email') ? 'sm:col-span-2' : ''}>
                     <label className="block text-xs font-semibold text-[#8C8076] uppercase tracking-wide mb-1.5">{f.label}</label>
                     <input
                       type={f.type}
+                      name={f.name}
                       placeholder={f.placeholder}
                       required
                       className={`w-full border border-gray-200 bg-white rounded-lg px-4 py-2.5 text-sm text-[#0D0D0D] focus:outline-none focus:border-[#D32F2F] ${isRTL ? 'text-right' : 'text-left'}`}
@@ -278,7 +289,7 @@ export function Services() {
                 ))}
                 <div className="sm:col-span-2">
                   <label className="block text-xs font-semibold text-[#8C8076] uppercase tracking-wide mb-1.5">{t('services_page.inquiry_service')}</label>
-                  <select className={`w-full border border-gray-200 bg-white rounded-lg px-4 py-2.5 text-sm text-[#0D0D0D] focus:outline-none focus:border-[#D32F2F]`}>
+                  <select name="service" className={`w-full border border-gray-200 bg-white rounded-lg px-4 py-2.5 text-sm text-[#0D0D0D] focus:outline-none focus:border-[#D32F2F]`}>
                     <option>{t('services.international_title')}</option>
                     <option>{t('services.domestic_title')}</option>
                     <option>{t('services.visa_title')}</option>
@@ -289,6 +300,7 @@ export function Services() {
                 <div className="sm:col-span-2">
                   <label className="block text-xs font-semibold text-[#8C8076] uppercase tracking-wide mb-1.5">{t('services_page.inquiry_msg')}</label>
                   <textarea
+                    name="message"
                     rows={4}
                     required
                     className={`w-full border border-gray-200 bg-white rounded-lg px-4 py-2.5 text-sm text-[#0D0D0D] focus:outline-none focus:border-[#D32F2F] resize-none ${isRTL ? 'text-right' : 'text-left'}`}
@@ -296,7 +308,7 @@ export function Services() {
                 </div>
               </div>
               <button type="submit" className="w-full py-3.5 bg-[#D32F2F] hover:bg-[#9A0007] text-white rounded-lg font-semibold text-sm transition-colors">
-                {t('services_page.inquiry_submit')}
+                {inquirySending ? (isRTL ? 'جاري الإرسال...' : 'Sending...') : t('services_page.inquiry_submit')}
               </button>
             </form>
           )}
