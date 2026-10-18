@@ -15,3 +15,5 @@ The following source PNGs are therefore **not included**, and **have not been re
 Before deploying, restore these files into their original matching paths if referenced by your inventory or future Figma Make sync. In the examined app screens, main destination imagery is currently loaded via remote URLs, but that does not certify every image and mapping as complete.
 
 Image performance recommendations: resize to rendered dimensions, convert oversized originals to WebP/AVIF, preserve alt text, lazy load below-the-fold media and test link validity on production.
+
+A GitHub Actions step now attempts to restore these exact original binary files from the public source repository directly into the isolated target repository after tests pass. Confirm the step's success and presence of all seven PNGs before treating the asset migration as complete.

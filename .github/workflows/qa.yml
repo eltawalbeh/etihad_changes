@@ -7,7 +7,7 @@ jobs:
   audit-and-build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -21,3 +21,29 @@ jobs:
         run: npm run build
       - name: Dependency security audit
         run: npm audit --audit-level=critical
+
+      - name: Restore original PNG assets into isolated target repository
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          for file in \
+            Assets/Images/azerbaijan-cover-01.png \
+            Assets/Images/georgia-cover-01.png \
+            Assets/Images/istanbul-cover-01.png \
+            Assets/Images/kazakhstan-cover-01.png \
+            Assets/Images/russia-cover-01.png \
+            Assets/Images/trabzon-cover-01.png \
+            src/imports/image.png
+          do
+            if test ! -s "$file"; then
+              mkdir -p "$(dirname "$file")"
+              curl --fail --location --silent --show-error --retry 3 \
+                "https://raw.githubusercontent.com/eltawalbeh/Etihadtourswebsite/main/$file" -o "$file"
+              test -s "$file"
+            fi
+          done
+          git add -- Assets/Images src/imports/image.png
+          if ! git diff --cached --quiet; then
+            git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "Restore original Etihad Tours binary assets"
+            git push origin HEAD:main
+          fi
