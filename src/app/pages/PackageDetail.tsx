@@ -14,7 +14,7 @@ const FONT = "'IBM Plex Sans Arabic', sans-serif";
 export function PackageDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { lang, t, isRTL } = useLanguage();
-  const { packages, settings } = useData();
+  const { packages, settings, loading } = useData();
   const [showModal, setShowModal] = useState(false);
   const [adults, setAdults] = useState(2);
   const [children, setChildren] = useState(0);
@@ -31,6 +31,7 @@ export function PackageDetail() {
   const [bookingRequests, setBookingRequests] = useState('');
 
   const pkg = packages.find(p => p.slug === slug);
+  if (!pkg && loading) return <div role="status" className="min-h-screen pt-36 text-center">{isRTL ? 'جاري تحميل تفاصيل الرحلة...' : 'Loading trip details...'}</div>;
   if (!pkg) return <Navigate to="/packages" replace />;
 
   const Arrow = isRTL ? ArrowLeft : ArrowRight;

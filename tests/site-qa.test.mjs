@@ -24,6 +24,9 @@ test('approved real team, no stock portrait seeding', () => {
   assert.ok(server.includes('Only superadmins can approve team members'));
   assert.ok(!server.includes('for (const pkg of SEED_PACKAGES)'));
 });
+test('production search uses live data, not demo imports', () => {
+  assert.ok(!read('src/app/pages/Search.tsx').includes("from '../data/mockData'"));
+});
 test('no mock data fallback to live visitors', () => {
   const data = read('src/app/context/DataContext.tsx');
   assert.ok(data.includes('useState<Package[]>([])'));

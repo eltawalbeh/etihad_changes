@@ -136,7 +136,7 @@ export function About() {
       {verifiedStatsData.length > 0 && <section className="py-16 bg-[#D32F2F]">
         <div className="max-w-[1280px] mx-auto px-6">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {statsData.map((stat, i) => (
+            {verifiedStatsData.map((stat, i) => (
               <FadeUp key={stat.label} delay={i * 0.1}>
                 <div className="text-center">
                   <div

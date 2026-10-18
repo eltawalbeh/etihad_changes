@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { Search as SearchIcon } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import { packages, articles } from '../data/mockData';
+import { useData } from '../context/DataContext';
 import { PackageCard } from '../components/PackageCard';
 import { Link } from 'react-router';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 
 export function Search() {
   const { t, lang, isRTL } = useLanguage();
+  const { packages, articles } = useData();
   const [searchParams, setSearchParams] = useSearchParams();
   const initialQ = searchParams.get('q') || '';
   const [query, setQuery] = useState(initialQ);
@@ -23,19 +24,19 @@ export function Search() {
   const q = searchParams.get('q')?.toLowerCase() || '';
 
   const matchedPackages = q
-    ? packages.filter(p =>
+    ? packages.filter(p => p.is_active && (
         p.title_en.toLowerCase().includes(q) ||
         p.title_ar.includes(q) ||
         p.destination_en.toLowerCase().includes(q) ||
-        p.destination_ar.includes(q)
+        p.destination_ar.includes(q))
       )
     : [];
 
   const matchedArticles = q
-    ? articles.filter(a =>
+    ? articles.filter(a => a.is_published && (
         a.title_en.toLowerCase().includes(q) ||
         a.title_ar.includes(q) ||
-        a.excerpt_en.toLowerCase().includes(q)
+        a.excerpt_en.toLowerCase().includes(q))
       )
     : [];
 

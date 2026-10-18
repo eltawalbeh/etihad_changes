@@ -45,7 +45,7 @@ export function Packages() {
     if (sortBy === 'duration') result = [...result].sort((a, b) => a.duration_days - b.duration_days);
     if (sortBy === 'newest') result = [...result].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
     return result;
-  }, [tripType, durationFilter, sortBy, priceMin, priceMax]);
+  }, [packages, tripType, durationFilter, sortBy, priceMin, priceMax]);
 
   const clearFilters = () => {
     setTripType('');

@@ -154,14 +154,13 @@ export function Footer() {
           <div className="text-center sm:text-start">
             <div>{t('footer.copyright')}</div>
             <div className="mt-1 leading-relaxed" dir={isRTL ? 'rtl' : 'ltr'}>
-              {isRTL
-                ? 'رخصة السياحة - الإتحاد - 73104024 | مؤسسة الأتحاد للسفر و السياحة - 3450102063'
-                : 'Tourism License - Al Etihad - 73104024 | Al Etihad Travel & Tourism Establishment - 3450102063'}
+              {isRTL ? 'مؤسسة الاتحاد للسفر والسياحة' : 'Al-Etihad Travel & Tourism Establishment'}
             </div>
           </div>
           <div className={`flex gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <Link to="/privacy" className="hover:text-white transition-colors">{t('footer.privacy')}</Link>
             <Link to="/terms" className="hover:text-white transition-colors">{t('footer.terms')}</Link>
+            <button type="button" className="underline hover:text-white transition-colors" onClick={() => window.dispatchEvent(new Event('etihad:reopen-consent'))}>{isRTL ? 'إعدادات ملفات الارتباط' : 'Cookie settings'}</button>
           </div>
         </div>
       </div>

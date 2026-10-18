@@ -239,7 +239,7 @@ app.post('/make-server-cf64f9a2/inquiries', async (c) => {
     const name = clean(body.name, 100), phone = clean(body.phone, 35), email = clean(body.email, 150);
     const message = clean(body.message, 2500), subject = clean(body.subject, 150);
     if (name.length < 2 || phone.length < 6 || message.length < 3) return c.json({ error: 'Name, phone, and message are required' }, 400);
-    if (email && !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) return c.json({ error: 'Invalid email' }, 400);
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return c.json({ error: 'Invalid email' }, 400);
     if (JSON.stringify(body).length > 12000) return c.json({ error: 'Request too large' }, 413);
     // Best-effort burst control, use a gateway/WAF for stronger rate limiting.
     const requestIp = clean(c.req.header('cf-connecting-ip') || c.req.header('x-forwarded-for') || '', 90).split(',')[0];
@@ -561,7 +561,7 @@ app.get("/make-server-cf64f9a2/articles", async (c) => {
     await seedIfNeeded();
     const raw = await kv.getByPrefix('art:');
     const articles = parseItems(raw as (string | null)[])
-      .filter((a: any) => a.is_published)
+      .filter((a: any) => a.is_published && !['top-destinations-2026','schengen-visa-tips','family-travel-guide','japan-cherry-blossom-season'].includes(a.slug))
       .sort((a: any, b: any) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
     return c.json({ articles });
   } catch (e) {

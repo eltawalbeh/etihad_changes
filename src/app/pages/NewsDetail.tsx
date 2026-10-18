@@ -8,10 +8,11 @@ import { PackageCard } from '../components/PackageCard';
 export function NewsDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { lang, t, isRTL } = useLanguage();
-  const { articles, packages } = useData();
+  const { articles, packages, loading } = useData();
   const Arrow = isRTL ? ArrowLeft : ArrowRight;
 
   const article = articles.find(a => a.slug === slug);
+  if (!article && loading) return <div role="status" className="min-h-screen pt-36 text-center">{isRTL ? 'جاري تحميل المقال...' : 'Loading article...'}</div>;
   if (!article) return <Navigate to="/news" replace />;
 
   const title = lang === 'ar' ? article.title_ar : article.title_en;
