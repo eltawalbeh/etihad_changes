@@ -1,0 +1,25 @@
+name: QA Bundle
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  audit-and-build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: package.json
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps --no-audit --no-fund
+      - name: Consolidated QA checks
+        run: npm run qa
+      - name: Production bundle build
+        run: npm run build
+      - name: Dependency security audit
+        run: npm audit --audit-level=critical
