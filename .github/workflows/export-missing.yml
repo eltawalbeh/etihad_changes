@@ -1,0 +1,54 @@
+name: Package missing original files
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/export-missing.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Create ZIP of only files missing from original repository
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, subprocess, urllib.request, zipfile
+          from pathlib import Path
+
+          baseline = '7b1157642d71193162fd023775d848bb122019d6'
+          url = 'https://api.github.com/repos/eltawalbeh/Etihadtourswebsite/git/trees/' + baseline + '?recursive=1'
+          req = urllib.request.Request(url, headers={'Accept':'application/vnd.github+json','User-Agent':'EtihadMissingFilesExporter'})
+          with urllib.request.urlopen(req, timeout=40) as response:
+              original = {item['path'] for item in json.load(response)['tree'] if item['type']=='blob'}
+          tracked = subprocess.check_output(['git','ls-files','-z']).decode().split('\0')
+          allowed = lambda p: p.startswith('src/app/') or p in ('.github/workflows/qa.yml', 'PROJECT_STRUCTURE.md')
+          missing = sorted(p for p in tracked if p and allowed(p) and p not in original)
+          expected_count = 47
+          if len(missing) != expected_count:
+              raise SystemExit(f'Unexpected missing-file count: {len(missing)}; expected {expected_count}; refusing to create misleading ZIP')
+          output = Path('ETIHAD_ONLY_MISSING_FILES.zip')
+          with zipfile.ZipFile(output, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
+              for path in missing:
+                  archive.write(path, arcname=path)
+          with zipfile.ZipFile(output) as archive:
+              for item in archive.infolist():
+                  if item.file_size != Path(item.filename).stat().st_size:
+                      raise SystemExit('Bad archive size: ' + item.filename)
+              if archive.testzip() is not None: raise SystemExit('Archive integrity test failed')
+          print(f'Created {output}: {len(missing)} missing source/support files')
+          PY
+      - name: Commit download ZIP to etihad_changes
+        shell: bash
+        run: |
+          git add ETIHAD_ONLY_MISSING_FILES.zip
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "Deliver ZIP with only 47 files missing from original"
+          git push origin HEAD:main
