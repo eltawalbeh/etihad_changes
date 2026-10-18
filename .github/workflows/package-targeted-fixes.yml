@@ -1,0 +1,68 @@
+name: Etihad targeted About and Supabase files
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/package-targeted-fixes.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps --no-audit --no-fund
+      - name: Verify project before packaging only the changed files
+        run: |
+          npm run qa
+          npm run build
+          npm audit --audit-level=high
+      - name: Create exact-path replacement ZIP
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import os, zipfile, subprocess
+          from pathlib import Path
+          chosen = [
+              'src/app/pages/About.tsx',
+              'src/app/pages/admin/AdminAbout.tsx',
+              'src/app/pages/admin/AdminTeam.tsx',
+              'src/app/pages/admin/AdminSettings.tsx',
+              'src/app/context/DataContext.tsx',
+              'src/app/data/mockData.ts',
+              'utils/supabase/info.tsx',
+              'supabase/functions/server/index.tsx',
+              'supabase/functions/server/seed.ts',
+              'supabase/functions/server/kv_store.tsx',
+              'supabase/functions/server/auth-rbac.js',
+              'supabase/functions/server/package-lifecycle.js',
+          ]
+          tracked = set(subprocess.check_output(['git','ls-files','-z']).decode().split('\0'))
+          if len(set(chosen)) != 12 or any(p not in tracked or not Path(p).is_file() for p in chosen):
+              raise SystemExit('Source files incomplete or not tracked')
+          out = Path('ETIHAD_ABOUT_TEAM_STATS_SUPABASE_ONLY.zip')
+          with zipfile.ZipFile(out, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as z:
+              for p in chosen: z.write(p, arcname=p)
+          with zipfile.ZipFile(out) as z:
+              assert set(z.namelist()) == set(chosen)
+              assert z.testzip() is None
+              for item in z.infolist():
+                  assert item.file_size == Path(item.filename).stat().st_size
+          print(f'OUTPUT_READY {out} files={len(chosen)} bytes={out.stat().st_size}')
+          PY
+      - name: Save minimal ZIP to isolated repository
+        shell: bash
+        run: |
+          git add ETIHAD_ABOUT_TEAM_STATS_SUPABASE_ONLY.zip
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Deliver targeted About team statistics and Supabase source replacements'
+          git push origin HEAD:main
