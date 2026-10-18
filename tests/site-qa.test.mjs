@@ -23,6 +23,24 @@ test('About page defines verified stats before referencing them', () => {
   assert.ok(about.includes('verifiedStatsData.length > 0'));
   assert.ok(about.includes('verifiedStatsData.map('));
 });
+
+test('About and CMS defaults match approved bilingual company narrative', () => {
+  const about = read('src/app/pages/About.tsx');
+  const adminAbout = read('src/app/pages/admin/AdminAbout.tsx');
+  const context = read('src/app/context/DataContext.tsx');
+  assert.ok(!about.includes('3,500 satisfied clients'));
+  assert.ok(!about.includes('أكثر من 3,500'));
+  for (const file of [adminAbout, context]) {
+    assert.ok(file.includes('مؤسسة الاتحاد للسفر والسياحة'));
+    assert.ok(file.includes('We aim to deliver a seamless travel experience'));
+    assert.ok(!file.includes('Founded in Saudi Arabia with deep roots'));
+  }
+  const adminSettings = read('src/app/pages/admin/AdminSettings.tsx');
+  for (const key of ['stats_happy_clients', 'stats_trips_organized', 'stats_years_experience', 'stats_destinations']) {
+    assert.ok(adminSettings.includes(key));
+  }
+  assert.ok(adminSettings.includes('currently provisional'));
+});
 test('approved real team, no stock portrait seeding', () => {
   const seed = read('supabase/functions/server/seed.ts');
   for (const name of ['عبدالله الطوالبة','Nabeel Ahmad','Farhan Ishaq']) assert.ok(seed.includes(name));
