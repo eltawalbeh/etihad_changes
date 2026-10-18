@@ -398,7 +398,7 @@ export function AdminSettings() {
         <div className="space-y-5" role="tabpanel">
       {/* Stats */}
       <Section title="Statistics (Homepage Counter)" icon={BarChart3}>
-        <label className="flex items-center gap-2 text-sm text-gray-700 mb-4"><input type="checkbox" checked={!!form.stats_verified} onChange={e => set('stats_verified', e.target.checked)} /> Publish verified statistics (enable only after evidence is approved)</label>
+        <label className="flex items-center gap-2 text-sm text-gray-700 mb-4"><input type="checkbox" checked={!!form.stats_verified} onChange={e => set('stats_verified', e.target.checked)} /> Show marketing statistics on website (currently provisional — verify all figures before final public release)</label>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <Field label="Happy Clients" value={form.stats_happy_clients} onChange={(v: string) => set('stats_happy_clients', v)} type="number" placeholder="12500" />
           <Field label="Trips Organized" value={form.stats_trips_organized} onChange={(v: string) => set('stats_trips_organized', v)} type="number" placeholder="3800" />
