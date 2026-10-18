@@ -93,7 +93,7 @@ const translations: Record<Language, Record<string, string>> = {
     'why.support': '24/7 Support',
     'why.support_desc': 'Our team is always available to assist you, day or night.',
     'why.experience': 'Trusted Experience',
-    'why.experience_desc': 'Over 15 years of excellence in travel and tourism.',
+    'why.experience_desc': 'Thoughtful travel planning and attentive customer support.',
     // News
     'news.title': 'Travel News',
     'news.all': 'All News',
@@ -138,7 +138,7 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.whatsapp': 'Chat on WhatsApp',
     // About
     'about.title': 'Al-Etihad for Travel & Tourism',
-    'about.story': 'Founded in Saudi Arabia with deep roots in Jordan, Al-Etihad Tours has been crafting unforgettable journeys for over 15 years. From luxury international getaways to seamless visa services, we handle every detail so you can focus on the experience.',
+    'about.story': 'We offer travel coordination, visa assistance, and attentive service for individuals and groups.',
     'about.values_title': 'Our Values',
     'about.value1_title': 'Excellence',
     'about.value1_desc': 'We deliver top-tier service in every aspect of travel.',
@@ -270,7 +270,7 @@ const translations: Record<Language, Record<string, string>> = {
     'why.support': 'دعم على مدار الساعة',
     'why.support_desc': 'فريقنا متاح دائماً لمساعدتك في أي وقت.',
     'why.experience': 'خبرة موثوقة',
-    'why.experience_desc': 'أكثر من ١٥ عاماً من التميز في السفر والسياحة.',
+    'why.experience_desc': 'خبرة عملية في تنسيق الرحلات والاهتمام بتفاصيل المسافرين.',
     // News
     'news.title': 'أخبار السياحة',
     'news.all': 'كل الأخبار',
@@ -315,7 +315,7 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.whatsapp': 'تحدث معنا على واتساب',
     // About
     'about.title': 'نحن الاتحاد للسفر والسياحة',
-    'about.story': 'تأسست شركة الاتحاد للسفر والسياحة في المملكة العربية السعودية بجذور راسخة في الأردن، وقد عملنا على صياغة رحلات لا تُنسى لأكثر من ٠٥ عاماً. من الرحلات الدولية الفاخرة إلى خدمات التأشيرات السلسة، نتولى كل التفاصيل حتى تتفرغ للتجربة.',
+    'about.story': 'نقدم خدمات تنسيق الرحلات والمساعدة في التأشيرات والحلول السياحية للأفراد والمجموعات.',
     'about.values_title': 'قيمنا',
     'about.value1_title': 'التميز',
     'about.value1_desc': 'نقدم خدمة عالية المستوى في كل جانب من جوانب السفر.',

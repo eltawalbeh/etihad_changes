@@ -13,7 +13,7 @@ Isolated source-derived development bundle for Phases 1, 2 and 3.
 - Arar address and user-provided Google Maps link; Riyadh/Arar displayed as neutral company locations, not unsupported branch classifications.
 - Safe non-destructive initial data; no mock-team fallback; unreviewed sample packages excluded from public listings.
 - Real inquiry submissions (contact, service, booking request) stored server-side in Supabase KV, only displaying success after the API responds; admin inbox under **/admin/inquiries**. Sending an inquiry **does not create a confirmed reservation**.
-- Team publication approval status and superadmin authorization.
+- Team publication approval status and superadmin authorization. A one-time migration seeds the three approved people without re-adding them after later administrative removal.
 - Fixed duplicated tracking tags; GA4/GTM now loads only after cookie consent. Clarity is intentionally disabled until a consent-aware integration is approved.
 - Page metadata, sitemap, descriptive alt text, legal routes and QA test/CI configuration.
 - Search tabs without a working API are hidden.

@@ -13,6 +13,7 @@ test('verification gates promotional metrics', () => {
   assert.ok(data.includes('stats_verified: false'));
   assert.ok(home.includes('settings.stats_verified === true'));
   assert.ok(!home.includes('Est. 2009'));
+  assert.ok(!read('src/app/context/LanguageContext.tsx').includes('Over 15 years'));
   assert.ok(!data.includes('٠٥ عاماً'));
 });
 test('approved real team, no stock portrait seeding', () => {
@@ -23,6 +24,8 @@ test('approved real team, no stock portrait seeding', () => {
   assert.ok(server.includes("member.approval_status === 'approved'"));
   assert.ok(server.includes('Only superadmins can approve team members'));
   assert.ok(!server.includes('for (const pkg of SEED_PACKAGES)'));
+  assert.ok(server.includes('site:approved-team-v1'));
+  assert.ok(!read('src/app/context/LanguageContext.tsx').includes('٠٥ عاماً'));
 });
 test('production search uses live data, not demo imports', () => {
   assert.ok(!read('src/app/pages/Search.tsx').includes("from '../data/mockData'"));

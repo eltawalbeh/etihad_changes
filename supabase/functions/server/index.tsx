@@ -205,10 +205,14 @@ app.use('/make-server-cf64f9a2/admin/*', authMiddleware());
 async function seedIfNeeded() {
   // Migration is intentionally non-destructive: never reset real site settings or published records.
   try {
-    for (const member of SEED_TEAM) {
-      if (!(await kv.get(`tm:${member.id}`))) {
-        await kv.set(`tm:${member.id}`, JSON.stringify(member));
+    // Run once per database: subsequent admin edits/deletions must remain authoritative.
+    if (!(await kv.get('site:approved-team-v1'))) {
+      for (const member of SEED_TEAM) {
+        if (!(await kv.get(`tm:${member.id}`))) {
+          await kv.set(`tm:${member.id}`, JSON.stringify(member));
+        }
       }
+      await kv.set('site:approved-team-v1', '1');
     }
     if (!(await kv.get('settings'))) await kv.set('settings', JSON.stringify(DEFAULT_SETTINGS));
     if (!(await kv.get('site:seeded'))) await kv.set('site:seeded', 'safe-v2');
