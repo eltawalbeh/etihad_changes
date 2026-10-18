@@ -16,6 +16,13 @@ test('verification gates promotional metrics', () => {
   assert.ok(!read('src/app/context/LanguageContext.tsx').includes('Over 15 years'));
   assert.ok(!data.includes('٠٥ عاماً'));
 });
+test('About page defines verified stats before referencing them', () => {
+  const about = read('src/app/pages/About.tsx');
+  assert.match(about, /const verifiedStatsData\s*=/);
+  assert.ok(about.includes('settings.stats_verified === true'), 'Unverified promotional numbers should not display');
+  assert.ok(about.includes('verifiedStatsData.length > 0'));
+  assert.ok(about.includes('verifiedStatsData.map('));
+});
 test('approved real team, no stock portrait seeding', () => {
   const seed = read('supabase/functions/server/seed.ts');
   for (const name of ['عبدالله الطوالبة','Nabeel Ahmad','Farhan Ishaq']) assert.ok(seed.includes(name));
