@@ -1,0 +1,78 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+
+/* Al-Etihad Brand Styles */
+:root {
+  --brand-red: #D32F2F;
+  --brand-deep-red: #9A0007;
+  --brand-light-red: #FF6659;
+  --brand-black: #0D0D0D;
+  --brand-offwhite: #F5F0EB;
+  --brand-gray: #8C8076;
+  --brand-card-bg: #161616;
+}
+
+/* RTL-aware scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Ensure body takes brand off-white */
+body {
+  background-color: var(--brand-offwhite);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--brand-offwhite);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--brand-red);
+  border-radius: 3px;
+}
+
+/* Line clamp utilities */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* WhatsApp pulse animation delay */
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+/* Smooth page transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+
+/* Hide scrollbar while keeping scroll functionality (for tab strip) */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}

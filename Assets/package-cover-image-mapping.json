@@ -1,0 +1,626 @@
+{
+  "manifest_version": 1,
+  "source_workbook": "etihad_package_import_drafts.xlsx",
+  "image_directory": "Images",
+  "upload_status": "not_uploaded",
+  "publication_status": "draft_only",
+  "rules": [
+    {
+      "scope": "Azerbaijan",
+      "cover_file": "azerbaijan-cover-01.png"
+    },
+    {
+      "scope": "Georgia",
+      "cover_file": "georgia-cover-01.png"
+    },
+    {
+      "scope": "Istanbul",
+      "cover_file": "istanbul-cover-01.png"
+    },
+    {
+      "scope": "Trabzon",
+      "cover_file": "trabzon-cover-01.png"
+    },
+    {
+      "scope": "Kazakhstan rate matrix",
+      "cover_file": "kazakhstan-cover-01.png"
+    },
+    {
+      "scope": "Russia",
+      "cover_file": "russia-cover-01.png"
+    }
+  ],
+  "mapped_packages": [
+    {
+      "source_row": 12,
+      "title_en": "Azerbaijan 3-night Package — Option 1",
+      "destination_en": "Azerbaijan",
+      "cover_file": "azerbaijan-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 13,
+      "title_en": "Azerbaijan 3-night Package — Option 2",
+      "destination_en": "Azerbaijan",
+      "cover_file": "azerbaijan-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 14,
+      "title_en": "Azerbaijan 3-night Package — Option 3",
+      "destination_en": "Azerbaijan",
+      "cover_file": "azerbaijan-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 15,
+      "title_en": "Azerbaijan 3-night Package — Option 4",
+      "destination_en": "Azerbaijan",
+      "cover_file": "azerbaijan-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 16,
+      "title_en": "Azerbaijan 4-night Package — Option 1",
+      "destination_en": "Azerbaijan",
+      "cover_file": "azerbaijan-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 17,
+      "title_en": "Azerbaijan 4-night Package — Option 2",
+      "destination_en": "Azerbaijan",
+      "cover_file": "azerbaijan-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 18,
+      "title_en": "Azerbaijan 4-night Package — Option 3",
+      "destination_en": "Azerbaijan",
+      "cover_file": "azerbaijan-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 19,
+      "title_en": "Azerbaijan 4-night Package — Option 4",
+      "destination_en": "Azerbaijan",
+      "cover_file": "azerbaijan-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 20,
+      "title_en": "Azerbaijan 6-night Package — Option 1",
+      "destination_en": "Azerbaijan",
+      "cover_file": "azerbaijan-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 21,
+      "title_en": "Azerbaijan 6-night Package — Option 2",
+      "destination_en": "Azerbaijan",
+      "cover_file": "azerbaijan-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 22,
+      "title_en": "Azerbaijan 6-night Package — Option 3",
+      "destination_en": "Azerbaijan",
+      "cover_file": "azerbaijan-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 23,
+      "title_en": "Azerbaijan 7-night Package — Option 1",
+      "destination_en": "Azerbaijan",
+      "cover_file": "azerbaijan-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 24,
+      "title_en": "Azerbaijan 7-night Package — Option 2",
+      "destination_en": "Azerbaijan",
+      "cover_file": "azerbaijan-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 25,
+      "title_en": "Azerbaijan 7-night Package — Option 3",
+      "destination_en": "Azerbaijan",
+      "cover_file": "azerbaijan-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 35,
+      "title_en": "Georgia: Radisson Blu Iveria",
+      "destination_en": "Georgia",
+      "cover_file": "georgia-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 36,
+      "title_en": "Georgia: Tbilisi & Tsinandali",
+      "destination_en": "Georgia",
+      "cover_file": "georgia-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 37,
+      "title_en": "Georgia Summer Tbilisi — Option 1",
+      "destination_en": "Georgia",
+      "cover_file": "georgia-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 38,
+      "title_en": "Georgia Summer Tbilisi — Option 2",
+      "destination_en": "Georgia",
+      "cover_file": "georgia-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 39,
+      "title_en": "Georgia Summer Tbilisi — Option 3",
+      "destination_en": "Georgia",
+      "cover_file": "georgia-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 40,
+      "title_en": "Georgia Summer Tbilisi — Option 4",
+      "destination_en": "Georgia",
+      "cover_file": "georgia-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 41,
+      "title_en": "Georgia Summer Tbilisi — Option 5",
+      "destination_en": "Georgia",
+      "cover_file": "georgia-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 42,
+      "title_en": "Georgia Summer Tbilisi — Option 6",
+      "destination_en": "Georgia",
+      "cover_file": "georgia-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 43,
+      "title_en": "Georgia Summer Tbilisi — Option 7",
+      "destination_en": "Georgia",
+      "cover_file": "georgia-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 44,
+      "title_en": "Almaty 3-night Package — Rate Matrix",
+      "destination_en": "Kazakhstan",
+      "cover_file": "kazakhstan-cover-01.png",
+      "pricing_model": "rate_matrix",
+      "status": "draft"
+    },
+    {
+      "source_row": 45,
+      "title_en": "Almaty 4-night Package — Rate Matrix",
+      "destination_en": "Kazakhstan",
+      "cover_file": "kazakhstan-cover-01.png",
+      "pricing_model": "rate_matrix",
+      "status": "draft"
+    },
+    {
+      "source_row": 46,
+      "title_en": "Almaty 5-night Package — Rate Matrix",
+      "destination_en": "Kazakhstan",
+      "cover_file": "kazakhstan-cover-01.png",
+      "pricing_model": "rate_matrix",
+      "status": "draft"
+    },
+    {
+      "source_row": 47,
+      "title_en": "Almaty 6-night Package — Rate Matrix",
+      "destination_en": "Kazakhstan",
+      "cover_file": "kazakhstan-cover-01.png",
+      "pricing_model": "rate_matrix",
+      "status": "draft"
+    },
+    {
+      "source_row": 48,
+      "title_en": "Almaty 7-night Package — Rate Matrix",
+      "destination_en": "Kazakhstan",
+      "cover_file": "kazakhstan-cover-01.png",
+      "pricing_model": "rate_matrix",
+      "status": "draft"
+    },
+    {
+      "source_row": 56,
+      "title_en": "Moscow Package — Option 1",
+      "destination_en": "Russia",
+      "cover_file": "russia-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 57,
+      "title_en": "Moscow Package — Option 2",
+      "destination_en": "Russia",
+      "cover_file": "russia-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 58,
+      "title_en": "Moscow Package — Option 3",
+      "destination_en": "Russia",
+      "cover_file": "russia-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 59,
+      "title_en": "Moscow Package — Option 4",
+      "destination_en": "Russia",
+      "cover_file": "russia-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 60,
+      "title_en": "Moscow Package — Option 5",
+      "destination_en": "Russia",
+      "cover_file": "russia-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 61,
+      "title_en": "Moscow–St Petersburg–Moscow — Option 1",
+      "destination_en": "Russia",
+      "cover_file": "russia-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 62,
+      "title_en": "Moscow–St Petersburg–Moscow — Option 2",
+      "destination_en": "Russia",
+      "cover_file": "russia-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 63,
+      "title_en": "Sochi Package",
+      "destination_en": "Russia",
+      "cover_file": "russia-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 64,
+      "title_en": "Sochi Krasnaya Polyana — Option 1",
+      "destination_en": "Russia",
+      "cover_file": "russia-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 65,
+      "title_en": "Sochi Krasnaya Polyana — Option 2",
+      "destination_en": "Russia",
+      "cover_file": "russia-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 66,
+      "title_en": "Istanbul Summer Package — 5 days, Option 1",
+      "destination_en": "Türkiye",
+      "cover_file": "istanbul-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 67,
+      "title_en": "Istanbul Summer Package — 5 days, Option 2",
+      "destination_en": "Türkiye",
+      "cover_file": "istanbul-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 68,
+      "title_en": "Istanbul Summer Package — 6 days, Option 1",
+      "destination_en": "Türkiye",
+      "cover_file": "istanbul-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 69,
+      "title_en": "Istanbul Summer Package — 6 days, Option 2",
+      "destination_en": "Türkiye",
+      "cover_file": "istanbul-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 70,
+      "title_en": "Trabzon Summer Package — 5 days, Option 1",
+      "destination_en": "Türkiye",
+      "cover_file": "trabzon-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 71,
+      "title_en": "Trabzon Summer Package — 5 days, Option 2",
+      "destination_en": "Türkiye",
+      "cover_file": "trabzon-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 72,
+      "title_en": "Trabzon Summer Package — 6 days, Option 1",
+      "destination_en": "Türkiye",
+      "cover_file": "trabzon-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    },
+    {
+      "source_row": 73,
+      "title_en": "Trabzon Summer Package — 6 days, Option 2",
+      "destination_en": "Türkiye",
+      "cover_file": "trabzon-cover-01.png",
+      "pricing_model": "fixed",
+      "status": "draft"
+    }
+  ],
+  "unmatched_packages": [
+    {
+      "source_row": 2,
+      "title_en": "Milan Promotional Package",
+      "destination_en": "Milan",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 3,
+      "title_en": "Baltic Package: Riga & Tallinn",
+      "destination_en": "Latvia and Estonia",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 4,
+      "title_en": "Riga Summer — Wellton Riverside",
+      "destination_en": "Latvia",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 5,
+      "title_en": "Riga Summer — Rixwell Elefant",
+      "destination_en": "Latvia",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 6,
+      "title_en": "Bali Honeymoon — Jumeirah Bali",
+      "destination_en": "Bali, Indonesia",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 7,
+      "title_en": "Bali Luxury Honeymoon — Amarterra Villas",
+      "destination_en": "Bali, Indonesia",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 8,
+      "title_en": "Austria Private Tour",
+      "destination_en": "Austria",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 9,
+      "title_en": "Spain Private Tour",
+      "destination_en": "Spain",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 10,
+      "title_en": "Poland Private Tour",
+      "destination_en": "Poland",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 11,
+      "title_en": "Poland: Krakow & Zakopane",
+      "destination_en": "Poland",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 26,
+      "title_en": "Karlovy Vary Sanatorium — One person, treatment",
+      "destination_en": "Czech Republic",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 27,
+      "title_en": "Karlovy Vary Sanatorium — Two people, treatment for both",
+      "destination_en": "Czech Republic",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 28,
+      "title_en": "Karlovy Vary Sanatorium — Two people, treatment for one",
+      "destination_en": "Czech Republic",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 29,
+      "title_en": "Prague Promotional — 2 pax",
+      "destination_en": "Czech Republic",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 30,
+      "title_en": "Prague Promotional — 4 pax",
+      "destination_en": "Czech Republic",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 31,
+      "title_en": "Prague Budget",
+      "destination_en": "Czech Republic",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 32,
+      "title_en": "Czech Republic 7 nights — 2 pax",
+      "destination_en": "Czech Republic",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 33,
+      "title_en": "Czech Republic 7 nights — 4 pax",
+      "destination_en": "Czech Republic",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 34,
+      "title_en": "Czech Republic 7 nights — 6 pax",
+      "destination_en": "Czech Republic",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 49,
+      "title_en": "Bishkek Summer Package — Option 1",
+      "destination_en": "Kyrgyzstan",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 50,
+      "title_en": "Bishkek Summer Package — Option 2",
+      "destination_en": "Kyrgyzstan",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 51,
+      "title_en": "Bishkek Summer Package — Option 3",
+      "destination_en": "Kyrgyzstan",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 52,
+      "title_en": "Kazakhstan & Kyrgyzstan Combo — 7 days, Option 1",
+      "destination_en": "Kazakhstan and Kyrgyzstan",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 53,
+      "title_en": "Kazakhstan & Kyrgyzstan Combo — 7 days, Option 2",
+      "destination_en": "Kazakhstan and Kyrgyzstan",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 54,
+      "title_en": "Kazakhstan & Kyrgyzstan Combo — 9 days, Option 1",
+      "destination_en": "Kazakhstan and Kyrgyzstan",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 55,
+      "title_en": "Kazakhstan & Kyrgyzstan Combo — 9 days, Option 2",
+      "destination_en": "Kazakhstan and Kyrgyzstan",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 74,
+      "title_en": "Northern Türkiye — 8 days, Option 1",
+      "destination_en": "Türkiye",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 75,
+      "title_en": "Northern Türkiye — 8 days, Option 2",
+      "destination_en": "Türkiye",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 76,
+      "title_en": "Northern Türkiye — 8 days, Option 3",
+      "destination_en": "Türkiye",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 77,
+      "title_en": "Batumi–Trabzon Combo",
+      "destination_en": "Georgia and Türkiye",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 78,
+      "title_en": "Uzbekistan 6-day Package — Option 1",
+      "destination_en": "Uzbekistan",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 79,
+      "title_en": "Uzbekistan 6-day Package — Option 2",
+      "destination_en": "Uzbekistan",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 80,
+      "title_en": "Uzbekistan 6-day Package — Option 3",
+      "destination_en": "Uzbekistan",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 81,
+      "title_en": "Uzbekistan 8-day Package — Option 1",
+      "destination_en": "Uzbekistan",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 82,
+      "title_en": "Uzbekistan 8-day Package — Option 2",
+      "destination_en": "Uzbekistan",
+      "asset_status": "pending_destination_cover"
+    },
+    {
+      "source_row": 83,
+      "title_en": "Uzbekistan 8-day Package — Option 3",
+      "destination_en": "Uzbekistan",
+      "asset_status": "pending_destination_cover"
+    }
+  ],
+  "summary": {
+    "source_records": 82,
+    "mapped_records": 46,
+    "pending_cover_records": 36
+  }
+}
