@@ -71,6 +71,18 @@ test('inquiry forms require server acceptance', () => {
     assert.ok(content.includes('set') && content.includes('Error'), path);
   }
 });
+test('team approval permission check lives inside team update endpoint', () => {
+  const server = read('supabase/functions/server/index.tsx');
+  const articlesStart = server.indexOf('app.put("/make-server-cf64f9a2/admin/articles/:id"');
+  const articlesEnd = server.indexOf('app.delete("/make-server-cf64f9a2/admin/articles/:id"');
+  const teamStart = server.indexOf('app.put("/make-server-cf64f9a2/admin/team/:id"');
+  const teamEnd = server.indexOf('app.delete("/make-server-cf64f9a2/admin/team/:id"');
+  assert.ok(articlesStart >= 0 && articlesEnd > articlesStart);
+  assert.ok(teamStart >= 0 && teamEnd > teamStart);
+  assert.ok(!server.slice(articlesStart, articlesEnd).includes('Only superadmins can approve team members'));
+  assert.ok(server.slice(teamStart, teamEnd).includes('Only superadmins can approve team members'));
+});
+
 test('private inquiry management and rate controls', () => {
   const server = read('supabase/functions/server/index.tsx');
   assert.ok(server.includes("app.post('/make-server-cf64f9a2/inquiries'"));
