@@ -32,7 +32,7 @@ export function About() {
   const heroImage = s.about_image_url || 'https://images.unsplash.com/photo-1650784854945-264d5b0b6b07?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=900';
   const storyLabel = isRTL ? (s.about_story_label_ar || 'قصتنا') : (s.about_story_label_en || 'Our Story');
   const pageTitle  = isRTL ? (s.about_title_ar  || t('about.title'))  : (s.about_title_en  || t('about.title'));
-  const story1     = isRTL ? (s.about_story_ar  || t('about.story'))  : (s.about_story_en  || t('about.story'));
+  const story1     = isRTL ? (s.about_story_ar || '') : (s.about_story_en || '');
   const story2     = isRTL
     ? (s.about_story2_ar || 'نفخر بخدمة أكثر من 3,500 عميل راضٍ من المملكة العربية السعودية والأردن وسائر دول الخليج، ونلتزم بتقديم تجارب سفر استثنائية تعكس قيمنا في الجودة والنزاهة.')
     : (s.about_story2_en || 'We proudly serve over 3,500 satisfied clients across Saudi Arabia, Jordan, and the wider Gulf region, committed to delivering exceptional travel experiences that reflect our core values of quality and integrity.');

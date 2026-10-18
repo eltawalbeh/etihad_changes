@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://etihadtours.com/</loc></url>
-  <url><loc>https://etihadtours.com/packages</loc></url>
-  <url><loc>https://etihadtours.com/services</loc></url>
   <url><loc>https://etihadtours.com/about</loc></url>
   <url><loc>https://etihadtours.com/contact</loc></url>
+  <url><loc>https://etihadtours.com/services</loc></url>
+  <url><loc>https://etihadtours.com/packages</loc></url>
+  <url><loc>https://etihadtours.com/news</loc></url>
+  <url><loc>https://etihadtours.com/evisa</loc></url>
 </urlset>

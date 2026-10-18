@@ -12,15 +12,20 @@ export function CookieBanner() {
     if (!consent) {
       setTimeout(() => setVisible(true), 2000);
     }
+    const reopen = () => setVisible(true);
+    window.addEventListener('etihad:reopen-consent', reopen);
+    return () => window.removeEventListener('etihad:reopen-consent', reopen);
   }, []);
 
   const handleAccept = () => {
     localStorage.setItem('etihad_cookie_consent', 'accepted');
+    window.dispatchEvent(new Event('etihad:consent-changed'));
     setVisible(false);
   };
 
   const handleDecline = () => {
     localStorage.setItem('etihad_cookie_consent', 'declined');
+    window.dispatchEvent(new Event('etihad:consent-changed'));
     setVisible(false);
   };
 

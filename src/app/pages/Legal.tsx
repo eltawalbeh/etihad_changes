@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
+import type { ReactNode } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-function Layout({ titleAr, titleEn, children }: { titleAr: string; titleEn: string; children: React.ReactNode }) {
+function Layout({ titleAr, titleEn, children }: { titleAr: string; titleEn: string; children: ReactNode }) {
   const { isRTL } = useLanguage();
   return <main dir={isRTL ? 'rtl' : 'ltr'} className="bg-[#F5F0EB] pt-32 pb-20 min-h-screen">
     <div className="max-w-3xl mx-auto px-6 space-y-6">

@@ -127,7 +127,7 @@ export function Home() {
               transition={{ duration: 1.2, ease: 'easeInOut' }}
               className="absolute inset-0"
               style={{
-                backgroundImage: `url(${currentSlide?.cover_image_url})`,
+                backgroundImage: currentSlide?.cover_image_url ? `url(${currentSlide.cover_image_url})` : 'linear-gradient(115deg, #161616, #5D1016)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
               }}
@@ -159,7 +159,7 @@ export function Home() {
         </button>
 
         {/* Current destination badge */}
-        <div className="absolute top-28 right-8 z-20 hidden lg:block">
+        {currentSlide && <div className="absolute top-28 right-8 z-20 hidden lg:block">
           <motion.div
             key={slideIndex}
             initial={{ opacity: 0, x: 20 }}
@@ -171,7 +171,7 @@ export function Home() {
               {isRTL ? currentSlide?.destination_ar : currentSlide?.destination_en}
             </span>
           </motion.div>
-        </div>
+        </div>}
 
         {/* Star rating badge */}
         <div className="absolute top-28 left-8 z-20 hidden lg:block">
@@ -193,7 +193,7 @@ export function Home() {
             <div className="inline-flex items-center gap-2 mb-6 px-5 py-2 rounded-full bg-[#D32F2F]/20 border border-[#D32F2F]/40 backdrop-blur-sm">
               <span className="w-2 h-2 rounded-full bg-[#D32F2F] animate-pulse" />
               <span className="text-sm text-white/90 font-medium tracking-wide">
-                {isRTL ? 'الاتحاد للسفر والسياحة' : 'Al-Etihad Tours — Est. 2009'}
+                {isRTL ? 'الاتحاد للسفر والسياحة' : 'Al-Etihad Tours'}
               </span>
             </div>
 
@@ -210,10 +210,10 @@ export function Home() {
                   className="mb-3 text-white leading-tight"
                   style={{ fontSize: 'clamp(2.8rem, 8vw, 5.5rem)', fontWeight: 700, lineHeight: 1.05 }}
                 >
-                  {isRTL ? currentSlide?.destination_ar : currentSlide?.destination_en}
+                  {currentSlide ? (isRTL ? currentSlide.destination_ar : currentSlide.destination_en) : t('hero.title')}
                 </h1>
                 <p className="text-[#D32F2F] font-semibold text-xl mb-4" style={{ fontSize: 'clamp(1rem, 2.5vw, 1.4rem)' }}>
-                  {isRTL ? currentSlide?.title_ar : currentSlide?.title_en}
+                  {currentSlide ? (isRTL ? currentSlide.title_ar : currentSlide.title_en) : (isRTL ? 'ابدأ رحلتك معنا' : 'Plan your next journey')}
                 </p>
               </motion.div>
             </AnimatePresence>
