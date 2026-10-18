@@ -1,0 +1,87 @@
+name: Build complete clean project ZIP
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/package-full-project.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install project dependencies
+        run: npm install --legacy-peer-deps --no-audit --no-fund
+      - name: Validate complete source code
+        run: |
+          npm run qa
+          npm run build
+          npm audit --audit-level=high
+      - name: Produce clean root-level ZIP
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess
+          import zipfile
+
+          output = 'ETIHAD_FULL_PROJECT_READY.zip'
+          excluded = {
+            output,
+            'ETIHAD_ONLY_MISSING_FILES.zip',
+            '.github/workflows/export-missing.yml',
+            '.github/workflows/package-full-project.yml',
+          }
+          all_files = [p for p in subprocess.check_output(['git', 'ls-files', '-z']).decode().split('\0') if p]
+          files = sorted(p for p in all_files if p not in excluded)
+          required = {
+            'src/app/App.tsx',
+            'src/app/routes.ts',
+            'src/app/context/AdminAuthContext.tsx',
+            'src/app/context/DataContext.tsx',
+            'src/app/context/LanguageContext.tsx',
+            'src/app/pages/Root.tsx',
+            'src/app/pages/About.tsx',
+            'src/app/components/Navbar.tsx',
+            'src/app/components/Footer.tsx',
+            'src/app/components/GoogleTag.tsx',
+            'src/app/data/mockData.ts',
+            'src/app/lib/inquiries.ts',
+            'supabase/functions/server/index.tsx',
+            'supabase/functions/server/seed.ts',
+            'index.html',
+            'package.json',
+            'vite.config.ts',
+          }
+          if missing := sorted(required - set(files)):
+              raise SystemExit('Required files missing: ' + ', '.join(missing))
+          invalid = [p for p in files if p.startswith(('src/app/components/context/', 'src/app/components/pages/', 'src/app/components/data/', 'src/app/components/lib/'))]
+          if invalid: raise SystemExit('Incorrect folder nesting: ' + ', '.join(invalid))
+          assert len(files) >= 140, f'Unexpected file count: {len(files)}'
+          for p in files:
+              assert Path(p).is_file(), p
+          with zipfile.ZipFile(output, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=6, allowZip64=True) as z:
+              for p in files:
+                  z.write(p, arcname=p)
+          with zipfile.ZipFile(output) as z:
+              assert len(z.namelist()) == len(files)
+              assert z.testzip() is None, 'Corrupted ZIP'
+              assert required.issubset(set(z.namelist()))
+          print(f'{output}: {len(files)} files, {Path(output).stat().st_size:,} bytes, ready to replace project root.')
+          PY
+      - name: Push complete ZIP to isolated changes repository
+        shell: bash
+        run: |
+          git add ETIHAD_FULL_PROJECT_READY.zip
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Deliver complete source project in correctly structured ZIP'
+          git push origin HEAD:main
