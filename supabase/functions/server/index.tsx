@@ -614,8 +614,6 @@ app.put("/make-server-cf64f9a2/admin/articles/:id", requireContentManagement, as
     const body = await c.req.json();
     const existing = await kv.get(`art:${id}`);
     if (!existing) return c.json({ error: 'Article not found' }, 404);
-    const allowedApproval = body.approval_status === 'approved' ? canManageSettings(c.get('role')) : true;
-    if (!allowedApproval) return c.json({ error: 'Only superadmins can approve team members' }, 403);
     const updated = { ...parseKvValue(existing), ...body, id };
     await kv.set(`art:${id}`, JSON.stringify(updated));
     return c.json({ article: updated });
@@ -686,6 +684,10 @@ app.put("/make-server-cf64f9a2/admin/team/:id", requireContentManagement, async 
     const body = await c.req.json();
     const existing = await kv.get(`tm:${id}`);
     if (!existing) return c.json({ error: 'Team member not found' }, 404);
+    // Only settings administrators can approve employees for public display.
+    if (body.approval_status === 'approved' && !canManageSettings(c.get('role'))) {
+      return c.json({ error: 'Only superadmins can approve team members' }, 403);
+    }
     const updated = { ...parseKvValue(existing), ...body, id };
     await kv.set(`tm:${id}`, JSON.stringify(updated));
     return c.json({ member: updated });
