@@ -9,8 +9,8 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: '22'
       - name: Install dependencies
@@ -20,7 +20,7 @@ jobs:
       - name: Production bundle build
         run: npm run build
       - name: Dependency security audit
-        run: npm audit --audit-level=critical
+        run: npm audit --audit-level=high
 
       - name: Restore original PNG assets into isolated target repository
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'

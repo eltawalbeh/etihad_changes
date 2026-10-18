@@ -1,19 +1,19 @@
-# Binary asset transfer status
+# Binary asset integrity
 
-The connected GitHub reader could transfer text files and SVG files from the original repository. GitHub binary image responses could not be decoded/transferred into this repository.
+All seven original PNG files were successfully restored by the GitHub Actions CI job on 18 October 2026.
 
-The following source PNGs are therefore **not included**, and **have not been replaced by fabricated images**:
+Original: `eltawalbeh/Etihadtourswebsite`. Isolated target: `eltawalbeh/etihad_changes`. Repository tree verification confirmed each original PNG is present under its matching path at the same original size.
 
-- [azerbaijan-cover-01.png](https://github.com/eltawalbeh/Etihadtourswebsite/blob/main/Assets/Images/azerbaijan-cover-01.png)
-- [georgia-cover-01.png](https://github.com/eltawalbeh/Etihadtourswebsite/blob/main/Assets/Images/georgia-cover-01.png)
-- [istanbul-cover-01.png](https://github.com/eltawalbeh/Etihadtourswebsite/blob/main/Assets/Images/istanbul-cover-01.png)
-- [kazakhstan-cover-01.png](https://github.com/eltawalbeh/Etihadtourswebsite/blob/main/Assets/Images/kazakhstan-cover-01.png)
-- [russia-cover-01.png](https://github.com/eltawalbeh/Etihadtourswebsite/blob/main/Assets/Images/russia-cover-01.png)
-- [trabzon-cover-01.png](https://github.com/eltawalbeh/Etihadtourswebsite/blob/main/Assets/Images/trabzon-cover-01.png)
-- [src/imports/image.png](https://github.com/eltawalbeh/Etihadtourswebsite/blob/main/src/imports/image.png)
+- `Assets/Images/azerbaijan-cover-01.png`
+- `Assets/Images/georgia-cover-01.png`
+- `Assets/Images/istanbul-cover-01.png`
+- `Assets/Images/kazakhstan-cover-01.png`
+- `Assets/Images/russia-cover-01.png`
+- `Assets/Images/trabzon-cover-01.png`
+- `src/imports/image.png`
 
-Before deploying, restore these files into their original matching paths if referenced by your inventory or future Figma Make sync. In the examined app screens, main destination imagery is currently loaded via remote URLs, but that does not certify every image and mapping as complete.
+GitHub Actions checks file presence and downloads missing files from the source repository. The PNGs have not been fabricated or modified.
 
-Image performance recommendations: resize to rendered dimensions, convert oversized originals to WebP/AVIF, preserve alt text, lazy load below-the-fold media and test link validity on production.
+## Performance follow-up
 
-A GitHub Actions step now attempts to restore these exact original binary files from the public source repository directly into the isolated target repository after tests pass. Confirm the step's success and presence of all seven PNGs before treating the asset migration as complete.
+The source destination PNGs are roughly 2.5–2.8 MB each; convert to WebP/AVIF and serve responsive sizes when placed on the public website. Existing pages may display remote Unsplash or CMS-sourced images instead of these local assets.

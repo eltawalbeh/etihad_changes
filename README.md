@@ -27,7 +27,7 @@ Isolated source-derived development bundle for Phases 1, 2 and 3.
 5. Review pre-existing records in the live database (legacy sample packages/articles/team). Code filters known unreviewed package slugs but it does **not** delete data.
 6. Publish legally approved privacy/terms pages; current pages are labeled drafts and deliberately marked noindex.
 7. CI build and source checks must pass, then run authenticated functional tests, real email/WhatsApp handoff, accessibility, mobile/browser, Lighthouse, and live domain SEO inspections before publication.
-8. A GitHub Actions step restores original binary image files from the publicly accessible source repository; verify the job and presence of all seven files before release. See ASSET_MIGRATION.md.
+8. GitHub Actions restored all seven original PNG image files to their matching source paths; their sizes were verified against the original repository. See ASSET_MIGRATION.md.
 
 ## Local QA
 

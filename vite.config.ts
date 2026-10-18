@@ -56,6 +56,9 @@ export default defineConfig({
           if (!id.includes('node_modules')) return undefined
           if (id.includes('xlsx')) return 'vendor-xlsx'
           if (id.includes('recharts')) return 'vendor-charts'
+          if (id.includes('/react-dom/') || id.includes('/react/')) return 'vendor-react'
+          if (id.includes('react-router') || id.includes('@remix-run')) return 'vendor-router'
+          if (id.includes('/motion/')) return 'vendor-motion'
           return undefined
         },
       },
