@@ -5,9 +5,38 @@ import {
   Upload, FileSpreadsheet, Download, AlertCircle, CheckCircle,
   ChevronLeft, Trash2, Image as ImageIcon, Loader2, X
 } from 'lucide-react';
-import * as XLSX from 'xlsx';
+
 import { projectId } from '/utils/supabase/info';
 import { EmojiFlag } from '../../components/EmojiFlag';
+
+function encodeCsvValue(value: unknown) {
+  const text = String(value ?? '');
+  return /[",\r\n]/.test(text) ? '"' + text.replace(/"/g, '""') + '"' : text;
+}
+
+function parseCsv(text: string): Record<string, string>[] {
+  const rows: string[][] = [];
+  let row: string[] = [], value = '', quoted = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (ch === '"') {
+      if (quoted && text[i + 1] === '"') { value += '"'; i++; }
+      else quoted = !quoted;
+    } else if (!quoted && ch === ',') { row.push(value); value = ''; }
+    else if (!quoted && (ch === '\n' || ch === '\r')) {
+      if (ch === '\r' && text[i + 1] === '\n') i++;
+      row.push(value); value = '';
+      if (row.some(cell => cell.trim())) rows.push(row);
+      row = [];
+    } else value += ch;
+  }
+  if (quoted) throw new Error('Unclosed CSV quoted field');
+  row.push(value);
+  if (row.some(cell => cell.trim())) rows.push(row);
+  const headers = rows.shift()?.map(v => v.replace(/^\uFEFF/, '').trim()) || [];
+  if (!headers.includes('title_en')) throw new Error('Invalid template: missing title_en column');
+  return rows.map(cells => Object.fromEntries(headers.map((header, i) => [header, cells[i] ?? ''])));
+}
 
 const BASE_URL = `https://${projectId}.supabase.co/functions/v1/make-server-cf64f9a2`;
 
@@ -63,51 +92,29 @@ export function AdminBulkImport() {
   const [step, setStep] = useState<'upload' | 'review' | 'done'>('upload');
 
   function downloadTemplate() {
-    const ws = XLSX.utils.json_to_sheet([TEMPLATE_EXAMPLE]);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Packages');
-
-    // Set column widths
-    ws['!cols'] = TEMPLATE_COLUMNS.map(col =>
-      ({ wch: col.includes('description') ? 40 : col.includes('includes') || col.includes('excludes') ? 50 : 20 })
-    );
-
-    XLSX.writeFile(wb, 'etihad_packages_template.xlsx');
+    const csv = [TEMPLATE_COLUMNS.join(','), TEMPLATE_COLUMNS.map(k => encodeCsvValue((TEMPLATE_EXAMPLE as Record<string, string>)[k])).join(',')].join('\r\n');
+    const blob = new Blob(['\uFEFF', csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url; link.download = 'etihad_packages_template.csv'; link.click();
+    URL.revokeObjectURL(url);
   }
 
-  function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
     setParseError('');
     setImportResult(null);
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      try {
-        const data = new Uint8Array(event.target?.result as ArrayBuffer);
-        const workbook = XLSX.read(data, { type: 'array' });
-        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-        const jsonData = XLSX.utils.sheet_to_json<Record<string, any>>(firstSheet);
-
-        if (jsonData.length === 0) {
-          setParseError('The file is empty or has no data rows.');
-          return;
-        }
-
-        const packages: ParsedPackage[] = jsonData.map((row, i) => ({
-          index: i,
-          data: row,
-          status: 'pending' as const,
-        }));
-
-        setParsedPackages(packages);
-        setStep('review');
-      } catch (err) {
-        console.log('Parse error:', err);
-        setParseError(`Failed to parse file: ${err}`);
-      }
-    };
-    reader.readAsArrayBuffer(file);
+    try {
+      if (!file.name.toLowerCase().endsWith('.csv')) throw new Error('Please use the CSV template');
+      if (file.size > 2 * 1024 * 1024) throw new Error('CSV exceeds 2 MB upload limit');
+      const data = parseCsv(await file.text());
+      if (!data.length) throw new Error('The file is empty or has no data rows');
+      setParsedPackages(data.map((row, i) => ({ index: i, data: row, status: 'pending' as const })));
+      setStep('review');
+    } catch (err) {
+      setParseError(err instanceof Error ? err.message : 'Unable to read CSV');
+    }
   }
 
   async function uploadImage(file: File): Promise<string> {
@@ -311,14 +318,14 @@ export function AdminBulkImport() {
               className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium transition-colors"
             >
               <Download size={16} />
-              Download Template (.xlsx)
+              Download Template (.csv)
             </button>
           </div>
 
           {/* Upload File */}
           <div>
             <h3 className="font-semibold text-gray-800 mb-2">2. Upload Filled File</h3>
-            <p className="text-sm text-gray-500 mb-3">Supports .xlsx, .xls, and .csv files.</p>
+            <p className="text-sm text-gray-500 mb-3">Supports CSV files. Download the template above.</p>
 
             <div
               onClick={() => fileInputRef.current?.click()}
@@ -331,7 +338,7 @@ export function AdminBulkImport() {
             <input
               ref={fileInputRef}
               type="file"
-              accept=".xlsx,.xls,.csv"
+              accept=".csv"
               onChange={handleFileUpload}
               className="hidden"
             />
