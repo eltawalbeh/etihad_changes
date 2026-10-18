@@ -34,8 +34,8 @@ export function About() {
   const pageTitle  = isRTL ? (s.about_title_ar  || t('about.title'))  : (s.about_title_en  || t('about.title'));
   const story1     = isRTL ? (s.about_story_ar || '') : (s.about_story_en || '');
   const story2     = isRTL
-    ? (s.about_story2_ar || 'نفخر بخدمة أكثر من 3,500 عميل راضٍ من المملكة العربية السعودية والأردن وسائر دول الخليج، ونلتزم بتقديم تجارب سفر استثنائية تعكس قيمنا في الجودة والنزاهة.')
-    : (s.about_story2_en || 'We proudly serve over 3,500 satisfied clients across Saudi Arabia, Jordan, and the wider Gulf region, committed to delivering exceptional travel experiences that reflect our core values of quality and integrity.');
+    ? (s.about_story2_ar || '')
+    : (s.about_story2_en || '');
   const valuesTitle = isRTL ? (s.about_values_title_ar || t('about.values_title')) : (s.about_values_title_en || t('about.values_title'));
 
   const values = [
@@ -234,11 +234,21 @@ export function About() {
                 <FadeUp key={member.id} delay={i * 0.1}>
                   <div className="flex flex-col items-center gap-3 text-center">
                     <div className="relative">
-                      <img
-                        src={member.photo_url}
-                        alt={lang === 'ar' ? member.name_ar : member.name_en}
-                        className="w-24 h-24 rounded-full object-cover border-4 border-[#F5F0EB]" loading="lazy"
-                      />
+                      {member.photo_url ? (
+                        <img
+                          src={member.photo_url}
+                          alt={lang === 'ar' ? member.name_ar : member.name_en}
+                          className="w-24 h-24 rounded-full object-cover border-4 border-[#F5F0EB]"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div
+                          className="w-24 h-24 rounded-full bg-[#F5F0EB] border-4 border-[#F5F0EB] flex items-center justify-center text-[#D32F2F] text-2xl font-bold"
+                          aria-label={lang === 'ar' ? member.name_ar : member.name_en}
+                        >
+                          {(lang === 'ar' ? member.name_ar : member.name_en).trim().charAt(0)}
+                        </div>
+                      )}
                       <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-[#D32F2F] rounded-full border-2 border-white" />
                     </div>
                     <div>
